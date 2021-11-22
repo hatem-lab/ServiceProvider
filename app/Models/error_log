@@ -1,0 +1,8 @@
+[13-Jul-2021 04:20:06 America/New_York] PHP Fatal error:  Uncaught Error: Class 'TCG\Voyager\Models\User' not found in /home/dalehoyg/tabuakhdar.dalelko.com/app/Models/Admin.php:14
+Stack trace:
+#0 {main}
+  thrown in /home/dalehoyg/tabuakhdar.dalelko.com/app/Models/Admin.php on line 14
+[17-Jul-2021 03:06:40 America/New_York] PHP Fatal error:  Uncaught Error: Class 'Illuminate\Database\Eloquent\Model' not found in /home/dalehoyg/tabuakhdar.dalelko.com/app/Models/City.php:7
+Stack trace:
+#0 {main}
+  thrown in /home/dalehoyg/tabuakhdar.dalelko.com/app/Models/City.php on line 7

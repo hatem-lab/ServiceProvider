@@ -11,15 +11,16 @@ use Ramsey\Uuid\Uuid;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 
-class Admin extends Authenticatable implements JWTSubject
+class Admin extends Authenticatable  implements JWTSubject
 {
-    const image_directory = 'teachers';
+    const image_directory = 'admins';
 
 
     /*
        * @var array
     */
     protected $guarded=[];
+
 
     /**
      * The attributes that should be hidden for arrays.
@@ -63,15 +64,15 @@ class Admin extends Authenticatable implements JWTSubject
 
 
 
-
-    public function courses()
-    {
-        return $this->belongsToMany('App\Models\Course','coures_student');
+    public function country() {
+        return $this->belongsTo(Region::class , 'country_id');
     }
 
-    public function teacherscourses()
-    {
-        return $this->hasMany('App\Models\Course','user_id');
+    public function city() {
+        return $this->belongsTo(City::class , 'city_id');
     }
+
+
+
 
 }

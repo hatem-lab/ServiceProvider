@@ -8,6 +8,7 @@ namespace App\Models\API\auth;
 
 
 
+use App\Models\API\lists\MediaModel;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -22,9 +23,11 @@ use Illuminate\Database\Eloquent\Model;
  */
 class ProfileResult extends Model
 {
-    protected $fillable=['id','city','region','password',
-        'email','image','name','phone'];
+    protected $fillable = [
+        'id' , 'first_name' , 'last_name' ,'email','location','region',
+        'phone' , 'image','birthday','preferred_media_contact'
 
+    ];
 
     /**
      * @OA\Property(
@@ -37,6 +40,33 @@ class ProfileResult extends Model
     public $id;
 
 
+    /**
+     * @OA\Property(
+     *     description="First Name",
+     *     title="first_name",
+     * )
+     *
+     * @var string
+     */
+    public $first_name;
+    /**
+     * @OA\Property(
+     *     description=" birthday",
+     *     title="birthday",
+     * )
+     *
+     * @var string
+     */
+    public $birthday;
+    /**
+     * @OA\Property(
+     *     description=" email",
+     *     title="email",
+     * )
+     *
+     * @var string
+     */
+    public $email;
 
     /**
      * @OA\Property(
@@ -46,7 +76,7 @@ class ProfileResult extends Model
      *
      * @var string
      */
-    public $name;
+    public $last_name;
 
     /**
      * @OA\Property(
@@ -57,17 +87,6 @@ class ProfileResult extends Model
      * @var string
      */
     public $phone;
-
-    /**
-     * @OA\Property(
-     *     description="email",
-     *     title="email",
-     * )
-     *
-     * @var string
-     */
-    public $email;
-
     /**
      * @OA\Property(
      *     description="region",
@@ -77,26 +96,16 @@ class ProfileResult extends Model
      * @var string
      */
     public $region;
-
     /**
      * @OA\Property(
-     *     description="city",
-     *     title="city",
+     *     description="location",
+     *     title="location",
      * )
      *
      * @var string
      */
-    public $city;
+    public $location;
 
-    /**
-     * @OA\Property(
-     *     description="password",
-     *     title="password",
-     * )
-     *
-     * @var string
-     */
-    public $password;
 
     /**
      * @OA\Property(
@@ -107,6 +116,18 @@ class ProfileResult extends Model
      * @var string
      */
     public $image;
+
+
+    /**
+     * @OA\Property(
+     *     description="preferred_media_contact",
+     *     title="preferred_media_contact",
+
+     * )
+     *
+     * @var MediaModel
+     */
+    public $preferred_media_contact;
 
 
 }

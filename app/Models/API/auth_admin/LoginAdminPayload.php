@@ -24,13 +24,13 @@ class LoginAdminPayload extends Model
 {
     /**
      * @OA\Property(
-     *     description="email",
-     *     title="email",
+     *     description="Phone number",
+     *     title="phone",
      * )
      *
      * @var string
      */
-    public $email;
+    public $phone;
 
     /**
      * @OA\Property(

@@ -21,17 +21,26 @@ class EditProfileAdminRequest
 {
     /**
      * @OA\Property(
+     *     description="First Name",
+     *     title="first_name",
+     * )
+     *
+     * @var string
+     */
+    public $first_name;
+
+    /**
+     * @OA\Property(
      *     description="Last Name",
      *     title="last_name",
      * )
      *
      * @var string
      */
-    public $name;
-
+    public $last_name;
     /**
      * @OA\Property(
-     *     description="Phone",
+     *     description="phone",
      *     title="phone",
      * )
      *
@@ -41,6 +50,15 @@ class EditProfileAdminRequest
 
     /**
      * @OA\Property(
+     *     description="birthday",
+     *     title="birthday",
+     * )
+     *
+     * @var string
+     */
+    public $birthday;
+    /**
+     * @OA\Property(
      *     description="email",
      *     title="email",
      * )
@@ -48,40 +66,39 @@ class EditProfileAdminRequest
      * @var string
      */
     public $email;
-
     /**
      * @OA\Property(
-     *     description="password",
-     *     title="password",
+     *     description="lat",
+     *     title="lat",
      * )
      *
-     * @var string
+     * @var integer
      */
-    public $password;
+    public $lat;
 
     /**
      * @OA\Property(
-     *     description="region",
-     *     title="region",
+     *     description="lng",
+     *     title="lng",
      * )
      *
-     * @var string
+     * @var integer
      */
-    public $region;
+    public $lng;
 
     /**
      * @OA\Property(
-     *     description="city",
-     *     title="city",
+     *     description="region id",
+     *     title="region_id",
      * )
      *
-     * @var string
+     * @var integer
      */
-    public $city;
+    public $region_id;
 
     /**
      * @OA\Property(
-     *  description="User image",
+     *  description="Agent image",
      *  property="image",
      *  type="string",
      *  format="binary"
@@ -91,5 +108,7 @@ class EditProfileAdminRequest
 
     public $image;
 
+
+    
 
 }

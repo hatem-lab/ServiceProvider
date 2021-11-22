@@ -1,6 +1,6 @@
 <?php
 
-
+use App\Models\Order;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,55 +15,47 @@ use Illuminate\Support\Facades\Route;
 */
 
 ////////////////////////////////////////////// Auth ///////////////////////////////////////////////
-Route::group(['prefix' => 'student'] , function () {
-Route::post('register' , 'AuthController@register')->name('register');
-Route::post('login' , 'AuthController@login')->name('login');
 
-Route::group(['middleware' => ['auth:user-api']] , function (){
 
-        Route::post('logout', 'AuthController@logout')->name('logout');
-        Route::get('profile', 'AuthController@profile');
-        Route::post('update-profile', 'AuthController@update_profile');
+//Route::post('login' , 'AuthController@login')->name('login');
+//Route::post('verify-account' , 'AuthController@verify_account');
+//Route::post('resend-code' , 'AuthController@resend_code');
 
-    });
+Route::group(['prefix' => 'user'] , function () {
+Route::post('register-user' , 'AuthController@register')->name('register');
+});
+Route::group(['prefix' => 'agent'] , function () {
+    Route::post('register', 'AuthAdminController@register');
 });
 
 
+Route::group(['prefix' => 'user'] , function (){
+    Route::post('login' , 'AuthAdminController@login');
+    Route::post('verify-account' , 'AuthAdminController@verify_account');
+    Route::post('activate-account' , 'AuthAdminController@activate_my_account');
+    Route::post('resend-code' , 'AuthAdminController@resend_code');
+    Route::post('forget-password' , 'AuthAdminController@forget_password');
+    Route::post('change-password' , 'AuthAdminController@change_password');
+    Route::post('reset-password' , 'AuthAdminController@reset_password');
+    Route::post('forget-password-confirm' , 'AuthAdminController@forget_password_confirm');
 
-
-
-Route::group(['prefix' => 'teacher'] , function () {
-    Route::post('register' , 'AuthTeacherController@register')->name('register');
-    Route::post('login' , 'AuthTeacherController@login')->name('login');
     Route::group(['middleware' => ['auth:user-api']] , function (){
-        Route::post('logout', 'AuthTeacherController@logout')->name('logout');
-        Route::get('profile', 'AuthTeacherController@profile');
-        Route::post('update-profile', 'AuthTeacherController@update_profile');
-
+        Route::post('logout' , 'AuthAdminController@logout');
+        Route::get('profile' , 'AuthAdminController@profile');
+        Route::post('change-phone-number' , 'AuthAdminController@change_phone_number');
+        Route::get('check-token' , 'AuthAdminController@check_token');
+        Route::post('update-profile' , 'AuthAdminController@update_profile');
+        Route::post('delete-account' , 'AuthAdminController@delete_account');
     });
-
 });
+
+
+////////////////////////////////////////////// Lists ///////////////////////////////////////////////
 
 Route::group(['prefix' => 'lists'] , function () {
-    Route::get('Courses-Type', 'ListsController@courses_type');
-    Route::get('Teachers', 'ListsController@Teachers');
+
+    Route::get('type-jobs', 'ListsController@type_jobs');
+    Route::get('sections', 'ListsController@sections');
+    Route::get('contact-medias', 'ListsController@contact_medias');
+
 });
-
-
-
-    Route::group(['prefix' => 'services'], function () {
-
-        Route::post('create-course', 'ServicesController@create_course');
-        Route::post('update-course', 'ServicesController@update_course');
-        Route::post('delete-course', 'ServicesController@delete_course');
-        Route::get('all-courses', 'ServicesController@all_courses');
-        Route::get('course-details', 'ServicesController@course_details');
-    });
-
-Route::group(['middleware' => ['auth:user-api']] , function () {
-    Route::group(['prefix' => 'services'], function ()
-    {
-        Route::get('courses-student', 'ServicesController@courses_student');
-    });
-});
-

@@ -7,32 +7,70 @@
             </li>
 
             <li class="nav-item  open ">
-                <a href=""><i class="la la-home"></i>
-                    <span class="menu-title" data-i18n="nav.dash.main">{{Lang::get('all.courses',[],getCurrentLang())}}</span>
+                <a href="{{route('admin.categories')}}"><i class="la la-home"></i>
+                    <span class="menu-title" data-i18n="nav.dash.main">{{Lang::get('all.categories',[],getCurrentLang())}}</span>
                     <span
-                        class="badge badge badge-info badge-pill float-right mr-2">{{App\Models\CourseType::count()}}</span>
+                        class="badge badge badge-info badge-pill float-right mr-2"></span>
                 </a>
-                <ul class="menu-content">
-                    <li class="active"><a class="menu-item" href="{{route('admin.courses')}}"
-                                          data-i18n="nav.dash.ecommerce"> {{Lang::get('all.all courses',[],getCurrentLang())}} </a>
-                    </li>
-                    <li><a class="menu-item" href="{{route('admin.courses.create')}}" data-i18n="nav.dash.crypto">{{Lang::get('all.Add Course',[],getCurrentLang())}}</a>
-                    </li>
-                </ul>
+
             </li>
 
-            <li class="nav-item"><a href=""><i class="la la-male"></i>
-                    <span class="menu-title" data-i18n="nav.dash.main">{{Lang::get('all.control panel',[],getCurrentLang())}} </span>
-                </a>
-                <ul class="menu-content">
-                    <li class="active"><a class="menu-item" href="{{route('admin.users.index')}}"
-                                          data-i18n="nav.dash.ecommerce">{{Lang::get('all.all Users',[],getCurrentLang())}}</a>
-                    </li>
 
-                    <li><a class="menu-item" href="{{route('admin.users.create')}}" data-i18n="nav.dash.crypto">{{Lang::get('all.Add Users',[],getCurrentLang())}}</a>
-                    </li>
-                </ul>
+            <li class="nav-item  open ">
+                <a href="{{route('admin.companies')}}"><i class="la la-home"></i>
+                    <span class="menu-title" data-i18n="nav.dash.main">{{Lang::get('all.companies',[],getCurrentLang())}}</span>
+                    <span
+                        class="badge badge badge-info badge-pill float-right mr-2"></span>
+                </a>
+
             </li>
+            <li class="nav-item  open ">
+                <a href="{{route('admin.shapes')}}"><i class="la la-home"></i>
+                    <span class="menu-title" data-i18n="nav.dash.main">{{Lang::get('all.shapes',[],getCurrentLang())}}</span>
+                    <span
+                        class="badge badge badge-info badge-pill float-right mr-2"></span>
+                </a>
+
+            </li>
+
+            <li class="nav-item  open ">
+                <a href="{{route('admin.doses')}}"><i class="la la-home"></i>
+                    <span class="menu-title" data-i18n="nav.dash.main">{{Lang::get('all.doses',[],getCurrentLang())}}</span>
+                    <span
+                        class="badge badge badge-info badge-pill float-right mr-2"></span>
+                </a>
+
+            </li>
+
+
+            <li class="nav-item  open ">
+                <a href="{{route('admin.contraindications')}}"><i class="la la-home"></i>
+                    <span class="menu-title" data-i18n="nav.dash.main">{{Lang::get('all.contraindications',[],getCurrentLang())}}</span>
+                    <span
+                        class="badge badge badge-info badge-pill float-right mr-2"></span>
+                </a>
+
+            </li>
+
+            <li class="nav-item  open ">
+                <a href="{{route('admin.medications')}}"><i class="la la-home"></i>
+                    <span class="menu-title" data-i18n="nav.dash.main">{{Lang::get('all.medications',[],getCurrentLang())}}</span>
+                    <span
+                        class="badge badge badge-info badge-pill float-right mr-2"></span>
+                </a>
+
+            </li>
+
+            <li class="nav-item  open ">
+                <a href="{{route('admin.prescriptions')}}"><i class="la la-home"></i>
+                    <span class="menu-title" data-i18n="nav.dash.main">{{Lang::get('all.prescriptions',[],getCurrentLang())}}</span>
+                    <span
+                        class="badge badge badge-info badge-pill float-right mr-2"></span>
+                </a>
+
+            </li>
+
+
         </ul>
     </div>
 </div>

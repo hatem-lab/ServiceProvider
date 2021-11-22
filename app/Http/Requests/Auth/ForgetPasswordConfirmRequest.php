@@ -27,7 +27,7 @@ class ForgetPasswordConfirmRequest extends FormRequest
     public function rules()
     {
         return [
-            'phone' => 'required|exists:admins',
+            'phone' => 'required|exists:users',
             'code' => 'required',
             'newPassword' => 'required|min:8'
         ];

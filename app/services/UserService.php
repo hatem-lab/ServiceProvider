@@ -5,7 +5,6 @@ namespace App\services;
 use App\enums\ErrorCode;
 use App\enums\LoginApiEnum;
 use App\enums\UserStatus;
-use App\Models\Admin;
 use App\Models\API\auth\LoginResult;
 use App\Models\API\auth\LoginResultApi;
 use App\Models\API\location\LocationUserResult;
@@ -20,7 +19,6 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Illuminate\Support\Facades\Auth;
@@ -29,84 +27,37 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 class UserService
 {
 
-    const Msg_RegistrationSuccess = "Please Enter the Confirmation Code you will receive via email to confirm your account.";
+    const Msg_RegistrationSuccess = "Please Enter the Confirmation Code you will receive via phone to confirm your account.";
     const Msg_RegistrationSuccessForgetPassword = "Please Enter the Confirmation Code you will receive via Email to confirm changing your password.";
     const Msg_RegistrationSuccessForgetPasswordPhone = "Please Enter the Confirmation Code you will receive via SMS to confirm changing your password.";
     const facebook_graph_base_url = 'https://graph.facebook.com/';
 
-    public static function profileCreate($post)
-    {
-        $msg = [];
-        $result = false;
-        $model = null;
-        $ex = '';
-        try {
-            $model = new Admin([
-                'email' => $post->email,
-                'name'=>$post->name,
-                'password' => Hash::make($post->password),
-                'user_type'=>'student',
-            ]);
-            $result = $model->save();
-        } catch (\Exception $ex) {
-            $ex = $ex->getMessage();
-            $msg = TeacherService::Msg_Exception;
-        }
-        return [$result, $model, $result ? 'regestered sucussefuly' : $msg, $ex];
-    }
-
-    public static function apiProfileCreate($request)
-    {
-
-        list($result, $user, $msg, $ex) = self::profileCreate($request);
-
-        $data = FillApiModelService::FillApiResultRegisterResultModel($user, UserService::Msg_RegistrationSuccess);
-
-        return [$result, $data, $msg, $ex];
-    }
-
-    public static function profileUpdate($request)
-    {
-        try {
 
 
-        $model = user();
-        if ($model) {
-            $model->name = (isset($request->name) && $request->name) ?
-                $request->name :
-                $model->name;
-            $model->region = (isset($request->region)) ? $request->region : $model->region;
-            $model->city = (isset($request->city)) ? $request->city : $model->city;
-            $model->phone = (isset($request->phone)) ? $request->phone : $model->phone;
-            $model->email = (isset($request->email)) ? $request->email : $model->email;
-            $model->password = (isset($request->password)) ? Hash::make($request->password) : $model->password;
-            if ($request->image) {
-                $model->photo = uploadImage($request->image, Admin::image_directory);
-            }
-            return (!$model->save()) ?
-                returnError("Error saving Teacher") :
-                returnSuccess("Student has been updated");
 
-        } else return returnError("Student not found");
-       }catch (\Exception $ex){
-        return returnError(TeacherService::Msg_Exception , $ex->getMessage() , $ex->getCode());
-        }
-            }
-
-    public static function login($request)
+    public static function loginPhoneEmailValidation($request)
     {
         try {
             $login_model = new LoginResult();
 
 
-            $token = Auth::guard('user-api')->attempt(['email' => $request->email, 'password' =>  $request->password,'user_type'=>'student']);
+            $token = Auth::guard('user-api')->attempt(['phone' => $request->phone, 'password' => null]);
             $user = Auth::guard('user-api')->user();
 
 
             if (!$user) {
                 $login_model->resultCode = LoginApiEnum::not_found;
                 $login_model->resultText = LoginApiEnum::LabelOf($login_model->resultCode);
-            }  else {
+            } elseif ($user->status == UserStatus::STATUS_BANNED) {
+                $login_model->resultCode = LoginApiEnum::banned;
+                $login_model->resultText = LoginApiEnum::LabelOf($login_model->resultCode);
+            } elseif (!$user->mobile_confirmed) {
+                $login_model->resultCode = LoginApiEnum::not_confirmed;
+                $login_model->resultText = LoginApiEnum::LabelOf($login_model->resultCode);
+            } elseif ($user->status == UserStatus::STATUS_INACTIVE) {
+                $login_model->resultCode = LoginApiEnum::not_active;
+                $login_model->resultText = LoginApiEnum::LabelOf($login_model->resultCode);
+            } else {
                 $login_model->resultCode = LoginApiEnum::accepted;
                 $login_model->resultText = LoginApiEnum::LabelOf($login_model->resultCode);
                 $login_model->token = $token;
@@ -126,7 +77,7 @@ class UserService
             return [true, $result, '', ''];
 
         } catch (\Exception $ex) {
-            return [false, null, TeacherService::Msg_Exception, $ex->getMessage()];
+            return [false, null, AdminService::Msg_Exception, $ex->getMessage()];
         }
 
     }
@@ -183,67 +134,6 @@ class UserService
         return true;
     }
 
-    public static function confirmUserEmail($email, $code, $type = UserConfirmationType::email_confirm)
-    {
-        $model = UserMobileEmail::find()
-            ->andWhere(['email' => $email])
-            ->andWhere(['type' => $type])
-            ->one();
-        $res = '';
-        if (!$model) {
-            throw new \yii\web\HttpException(200, "Email not found", 200);
-        }
-        if ($model->is_confirmed) {
-            throw new \yii\web\HttpException(200, "Email already confirmed", 200);
-        }
-        if ($model->confirm_code != $code) {
-            throw new \yii\web\HttpException(200, "Wrong confirmation code", 200);
-        } else {
-            $user = User::findOne($model->user_id);
-            if (!$user) {
-                throw new \yii\web\HttpException(200, "User not found", 200);
-            }
-            $model->is_confirmed = 1;
-            if (!$model->save()) {
-                throw new \yii\web\HttpException(200, "Error saving email", 200);
-            }
-            $user->email = $model->email;
-            $user->email_confirmed = 1;
-            $user->status = User::STATUS_ACTIVE;
-            if (!$user->save()) {
-                throw new \yii\web\HttpException(200, "Error saving user", 200);
-            }
-
-            //delete other emails
-            $models = UserMobileEmail::find()
-                ->andWhere(['user_id' => $model->user_id])
-                ->andWhere(['not', ['email' => $email]])
-                ->andWhere(['type' => $type])
-                ->all();
-            foreach ($models as $one) {
-                $one->delete();
-            }
-
-            //
-            $login_model = new LoginResult();
-            $user->setAuthKey;
-            $is_ok = true;
-            $login_model->resultCode = LoginApiEnum::accepted;
-            $login_model->resultText = LoginApiEnum::LabelOf($login_model->resultCode);
-            $login_model->token = $user->auth_key;
-            $login_model->profile = FillApiModelService::FillProfileResultModel($user);
-            $res = new LoginResultApi([
-                'result' => $login_model,
-                'isOk' => $is_ok,
-                'message' => new ApiMessage([
-                    'type' => 'Success',
-                    'code' => ErrorCode::success,
-                    'content' => '',
-                ])
-            ]);
-        }
-        return $res;
-    }
 
 
     public static function confirmUserPhone($request, $type = UserConfirmationType::account_confirm)
@@ -302,7 +192,7 @@ class UserService
             }
             return [true, $res, '', ''];
         } catch (\Exception $ex) {
-            return [false, null, TeacherService::Msg_Exception, $ex->getMessage()];
+            return [false, null, AdminService::Msg_Exception, $ex->getMessage()];
         }
     }
 
@@ -344,65 +234,12 @@ class UserService
             return [true, $data, '', ''];
 
         } catch (\Exception $ex) {
-            return [false, null, TeacherService::Msg_Exception, $ex->getMessage()];
+            return [false, null, AdminService::Msg_Exception, $ex->getMessage()];
         }
     }
 
 
-    public static function userSetProfileData($request)
-    {
-        $model = user();
-        $data = [];
-        if ($model) {
-//            if (!$model->need_password && !Yii::$app->security->validatePassword($request->password, $model->password_hash)) {
-//                throw new \yii\web\HttpException(200, "Wrong password", 200);
-//            }
 
-            $userModel = User::findOne($model->id);
-            if (isset($request->phone)) {
-                if (!$userModel->phone) {
-                    //find phone
-                    $user = User::find()
-                        ->andWhere(['phone' => $request->phone])
-                        ->one();
-                    if ($user) {
-                        throw new \yii\web\HttpException(200, "Phone already used", 200);
-                    }
-                    $userModel->phone = $request->phone;
-                    $userModel->mobile_confirmed = 0;
-                    list($result_mobile, $model_mobile) = UserService::addUserMobileEmail($userModel->id, ["UserMobileEmail" => ["mobile" => $userModel->phone]], 1, true);
-                } else {
-                    throw new \yii\web\HttpException(200, "Phone already set", 200);
-                }
-            }
-            if (isset($request->new_password)) {
-                if ($userModel->need_password) {
-                    $userModel->password_hash = self::setPassword($request->new_password);
-                    $userModel->need_password = 0;
-                } else {
-                    throw new \yii\web\HttpException(200, "Password already set", 200);
-                }
-            }
-
-//            Yii::$app->user->logout();
-//            UserService::reflectProfileUpdateOnTeacher($model);
-            if (!$userModel->save()) {
-                throw new \yii\web\HttpException(200, "Error saving user", 200);
-            }
-            $data = new ApiResult([
-                'isOk' => true,
-                'message' => new ApiMessage([
-                    'type' => 'Success',
-                    'code' => ErrorCode::success,
-                    'content' => t('Saved', [], api_lang()),
-//                    'content' => t(UserService::Msg_RegistrationSuccess, [], api_lang()),
-                ]),
-            ]);
-        } else {
-            throw new \yii\web\HttpException(200, "User not found", 200);
-        }
-        return $data;
-    }
 
 
     public static function sendCodePhone($model)
@@ -429,7 +266,7 @@ class UserService
             JWTAuth::setToken($token)->invalidate();
             return returnSuccess("Logged out successfully");
         } catch (\Exception $ex) {
-            return returnError(TeacherService::Msg_Exception, $ex->getMessage(), $ex->getCode());
+            return returnError(AdminService::Msg_Exception, $ex->getMessage(), $ex->getCode());
         }
     }
 
@@ -454,31 +291,11 @@ class UserService
 
             return returnSuccess('Code Resent');
         } catch (\Exception $ex) {
-            return returnError(TeacherService::Msg_Exception, $ex->getMessage());
+            return returnError(AdminService::Msg_Exception, $ex->getMessage());
         }
     }
 
-    public static function userProfileUpdate($request)
-    {
-        try {
-            $model = user();
-            if ($model) {
-                $model->fname = (isset($request->first_name) && $request->first_name) ? $request->first_name : $model->fname;
-                $model->lname = (isset($request->last_name) && $request->last_name) ? $request->last_name : $model->lname;
 
-                if ($request->image) {
-                    $model->avatar = uploadImage($request->image, User::image_directory);
-                }
-
-                return (!$model->save()) ? returnError("Error saving user") : returnSuccess("User has been updated");
-            } else {
-                return returnError("User not found");
-            }
-
-        } catch (\Exception $ex) {
-            return returnError(TeacherService::Msg_Exception, $ex->getMessage(), 555);
-        }
-    }
 
 
     public static function deleteAccount($request)
@@ -500,7 +317,7 @@ class UserService
             return returnSuccess("Deleted");
 
         } catch (\Exception $ex) {
-            return returnError(TeacherService::Msg_Exception, $ex->getMessage(), $ex->getCode());
+            return returnError(AdminService::Msg_Exception, $ex->getMessage(), $ex->getCode());
         }
     }
 
@@ -529,7 +346,7 @@ class UserService
             ]);
             return [true, $res, '', ''];
         } catch (\Exception $ex){
-            return [false, null, TeacherService::Msg_Exception, $ex->getMessage()];
+            return [false, null, AdminService::Msg_Exception, $ex->getMessage()];
         }
     }
 
@@ -553,7 +370,7 @@ class UserService
             $location->save();
             return returnSuccess("A new location has been added");
         }catch (\Exception $ex){
-            return returnError(TeacherService::Msg_Exception , $ex->getMessage() , $ex->getCode());
+            return returnError(AdminService::Msg_Exception , $ex->getMessage() , $ex->getCode());
         }
     }
 
@@ -583,7 +400,7 @@ class UserService
 
             return returnSuccess("This location has been updated");
         }catch (\Exception $ex){
-            return returnError(TeacherService::Msg_Exception , $ex->getMessage() , $ex->getCode());
+            return returnError(AdminService::Msg_Exception , $ex->getMessage() , $ex->getCode());
         }
     }
 
@@ -603,7 +420,7 @@ class UserService
             return returnSuccess("Deleted");
 
         }catch (\Exception $ex){
-            return returnError(TeacherService::Msg_Exception , $ex->getMessage() , $ex->getCode());
+            return returnError(AdminService::Msg_Exception , $ex->getMessage() , $ex->getCode());
         }
     }
 
@@ -620,7 +437,7 @@ class UserService
             $user->save();
             return returnSuccess('Firebase token changed');
         } catch (\Exception $ex){
-            return returnError(TeacherService::Msg_Exception , $ex->getMessage() , $ex->getCode());
+            return returnError(AdminService::Msg_Exception , $ex->getMessage() , $ex->getCode());
         }
     }
 
@@ -637,7 +454,7 @@ class UserService
             $user->save();
             return returnSuccess('User language changed');
         } catch (\Exception $ex){
-            return returnError(TeacherService::Msg_Exception , $ex->getMessage() , $ex->getCode());
+            return returnError(AdminService::Msg_Exception , $ex->getMessage() , $ex->getCode());
         }
 
 

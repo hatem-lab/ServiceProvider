@@ -82,16 +82,12 @@
 <!-- begin footer html -->
 @include('dashboard.includes.footer')
 
-<!-- end footer -->
 
-@notify_js
-@notify_render
 
-<script src="//js.pusher.com/3.1/pusher.min.js"></script>
 
-<!-- BEGIN VENDOR JS-->
 <script src="{{asset('assets/admin/vendors/js/vendors.min.js')}}" type="text/javascript"></script>
 <script src="{{asset('assets/admin/vendors/js/editors/ckeditor/ckeditor.js')}}" type="text/javascript"></script>
+<script src="{{asset('assets/js/nicescroll/jquery.nicescroll.js')}}" type="text/javascript"></script>
 
 <!-- BEGIN VENDOR JS-->
 <script src="{{asset('assets/admin/vendors/js/tables/datatable/datatables.min.js')}}"
@@ -103,11 +99,12 @@
         type="text/javascript"></script>
 <script src="{{asset('assets/admin/vendors/js/forms/toggle/bootstrap-checkbox.min.js')}}"
         type="text/javascript"></script>
+
 <script src="{{asset('assets/admin/vendors/js/forms/toggle/switchery.min.js')}}" type="text/javascript"></script>
 <script src="{{asset('assets/admin/js/scripts/forms/switch.js')}}" type="text/javascript"></script>
 <script src="{{asset('assets/admin/vendors/js/forms/select/select2.full.min.js')}}" type="text/javascript"></script>
 <script src="{{asset('assets/admin/js/scripts/forms/select/form-select2.js')}}" type="text/javascript"></script>
-
+<!-- END PAGE LEVEL JS-->
 <!-- BEGIN PAGE VENDOR JS-->
 <script src="{{asset('assets/admin/vendors/js/charts/chart.min.js')}}" type="text/javascript"></script>
 <script src="{{asset('assets/admin/vendors/js/charts/echarts/echarts.js')}}" type="text/javascript"></script>
@@ -139,22 +136,15 @@
 <script src="{{asset('assets/admin/js/scripts/forms/checkbox-radio.js')}}" type="text/javascript"></script>
 <script src="{{asset('assets/admin/js/scripts/modal/components-modal.js')}}" type="text/javascript"></script>
 
-<script>
-    var previousCounter = $('.notification-counter').text(); //8
-    var notificationsCount = parseInt(previousCounter);
-    // Enable pusher logging - don't include this in production
-    var pusher = new Pusher('2203df2757e00ac59e6d', {
-        encrypted: true
-    });
-    //Pusher.logToConsole = true;
-    // Subscribe to the channel we specified in our Laravel Event
-    var channel = pusher.subscribe('order');
-    // Bind a function to a Our Event
-    channel.bind('App\\Events\\NewOrder', function(data) {
-        notificationsCount += 1;
-        $('.notification-counter').text(notificationsCount)
-    });
-</script>
+
+<!-- plugin_path -->
+<script type="text/javascript">var plugin_path = '{{ asset('assets/js') }}/';</script>
+
+<!-- chart -->
+
+<!-- custom -->
+<script src="{{ asset('assets/admin/assets/js/custom.js') }}"></script>
+<script src="{{ asset('assets/admin/assets/js/plugins-jquery.js') }}"></script>
 <script>
 
     $('#meridians1').timeDropper({

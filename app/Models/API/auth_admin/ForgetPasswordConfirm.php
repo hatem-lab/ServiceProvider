@@ -4,7 +4,7 @@
  * @license Apache 2.0
  */
 
-namespace App\Models\API\auth;
+namespace App\Models\API\auth_admin;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class ForgetPasswordConfirm
 {
+
     /**
      * @OA\Property(
      *     description="The phone of user to verify",
@@ -29,10 +30,9 @@ class ForgetPasswordConfirm
      * @var string
      */
     public $phone;
-
     /**
      * @OA\Property(
-     *     description="Verification Code",
+     *     description="The code of agent to verify",
      *     title="code",
      * )
      *
@@ -42,13 +42,14 @@ class ForgetPasswordConfirm
 
     /**
      * @OA\Property(
-     *     description="Verification Code",
-     *     title="code",
+     *     description="newPassword",
+     *     title="newPassword",
      * )
      *
      * @var string
      */
     public $newPassword;
+
 
 }
 

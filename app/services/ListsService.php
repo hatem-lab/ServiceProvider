@@ -5,25 +5,63 @@ namespace App\services;
 use App\enums\ActiveInactiveStatus;
 use App\enums\ErrorCode;
 use App\enums\RequestStatus;
-use App\Models\API\lists\CarTypeResult;
-use App\Models\API\lists\CourseTypeResult;
-use App\Models\API\lists\OrderStatusListModel;
-use App\Models\API\lists\OrderStatusListResult;
+use App\Models\API\lists\ContactMediaResult;
+use App\Models\API\lists\JobTypeResult;
+use App\Models\Job;
+use App\Models\MediaContact;
 use App\Models\API\other\ApiMessage;
-use App\Models\CarType;
-use App\Models\Course;
-use App\Models\CourseType;
+use App\Models\API\other\IdValueApiModel;
+use App\Models\City;
+use App\Models\Section;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\DB;
+use function Symfony\Component\Translation\t;
 
 
 class ListsService {
 
-
-    public static function CourseTypeList($request) {
+    public static function ContactMediasList($request)
+    {
 
         try {
             $page_size = $request->pagesize ? $request->pagesize : 10;
-            $query = DB::table('courses_types')
+            $query = DB::table('preferred_contact_media')->latest();
+
+            if ($request->search) {
+                $query = $query
+                    ->where('name', 'LIKE', "%{$request->search}%");
+            }
+
+            $data = [];
+            foreach ($query->paginate($page_size) as $one) {
+                $item = FillApiModelService::FillContactMediaApiModel($one);
+                $data[] = $item;
+            }
+
+
+            $res = new ContactMediaResult([
+                'items_count' => MediaContact::all()->count(),
+                'result' => $data,
+                'isOk' => true,
+                'message' => new ApiMessage([
+                    'type' => 'Success',
+                    'code' => ErrorCode::success,
+                    'content' => '',
+                ]),
+            ]);
+
+            return [true, $res, '', ''];
+        } catch (\Exception $ex) {
+            return [false, null, AdminService::Msg_Exception, $ex->getMessage()];
+        }
+    }
+
+    public static function SectionsList($request) {
+
+        try {
+            $page_size = $request->pagesize ? $request->pagesize : 10;
+            $query = DB::table('sections')
                 ->where('status', ActiveInactiveStatus::active)->latest();
 
             if ($request->search) {
@@ -32,13 +70,13 @@ class ListsService {
             }
             $data = [];
             foreach ($query->paginate($page_size) as $one) {
-                $item = FillApiModelService::FillListCoursesTypeApiModel($one);
+                $item = FillApiModelService::FillListSectionApiModel($one);
                 $data[] = $item;
             }
 
 
-            $res = new CourseTypeResult([
-                'items_count'=>CourseType::count(),
+            $res = new JobTypeResult([
+                'items_count'=>Section::count(),
                 'result' => $data,
                 'isOk' => true,
                 'message' => new ApiMessage([
@@ -50,20 +88,18 @@ class ListsService {
 
             return [true , $res , '' , ''];
         } catch (\Exception $ex){
-            return [false , null , TeacherService::Msg_Exception , $ex->getMessage()];
+            return [false , null , AdminService::Msg_Exception , $ex->getMessage()];
         }
 
 
     }
 
-
-    public static function TeachersList($request) {
-
+    public static function JobsList($request) {
 
         try {
             $page_size = $request->pagesize ? $request->pagesize : 10;
-            $query = DB::table('admins')
-                ->where('user_type','teacher')->latest();
+            $query = DB::table('jobs')
+                ->where('status', ActiveInactiveStatus::active)->latest();
 
             if ($request->search) {
                 $query = $query
@@ -71,18 +107,13 @@ class ListsService {
             }
             $data = [];
             foreach ($query->paginate($page_size) as $one) {
-                $course=Course::where('user_id',$one->id)->get();
-                if($course->count() >=2)
-                {
-                    $item = FillApiModelService::FillListTeacherApiModel($one);
-                    $data[] = $item;
-                }
-
+                $item = FillApiModelService::FillListJobTypeApiModel($one);
+                $data[] = $item;
             }
 
 
-            $res = new CourseTypeResult([
-                'items_count'=>$query->count(),
+            $res = new JobTypeResult([
+                'items_count'=>Job::count(),
                 'result' => $data,
                 'isOk' => true,
                 'message' => new ApiMessage([
@@ -94,9 +125,12 @@ class ListsService {
 
             return [true , $res , '' , ''];
         } catch (\Exception $ex){
-            return [false , null , TeacherService::Msg_Exception , $ex->getMessage()];
+            return [false , null , AdminService::Msg_Exception , $ex->getMessage()];
         }
 
 
     }
+
+
+
 }

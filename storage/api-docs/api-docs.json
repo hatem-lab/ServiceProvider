@@ -1,7 +1,7 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "Start Laravel",
+        "title": "Service Provider",
         "version": "1.0.0"
     },
     "servers": [
@@ -10,17 +10,60 @@
             "description": "main server"
         },
         {
-            "url": "/laravel/backend/public/api",
+            "url": "/backend/public/api",
             "description": "local server"
         }
     ],
     "paths": {
-        "/student/register": {
+        "/agent/register": {
             "post": {
                 "tags": [
-                    "Auth Student"
+                    "Auth-Agent_register"
                 ],
-                "summary": "Register as a new Student",
+                "summary": "Register as a new agent",
+                "operationId": "authRegister",
+                "parameters": [
+                    {
+                        "name": "Language",
+                        "in": "header",
+                        "description": "(en or ar) If left empty it is English",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Registration model",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RegisterAdminModel"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "RegisterResult response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiResultRegisterResult"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/register-user": {
+            "post": {
+                "tags": [
+                    "Auth-client_register"
+                ],
+                "summary": "Register as a new user",
                 "operationId": "authRegister",
                 "parameters": [
                     {
@@ -58,218 +101,12 @@
                 }
             }
         },
-        "/student/login": {
+        "/user/login": {
             "post": {
                 "tags": [
-                    "Auth Student"
+                    "Auth-login"
                 ],
-                "summary": "Login as a Student",
-                "operationId": "authLogin",
-                "parameters": [
-                    {
-                        "name": "Language",
-                        "in": "header",
-                        "description": "(en or ar) If left empty it is English",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "description": "Login model",
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/LoginPayload"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "User Profile response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/LoginResultApi"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/student/profile": {
-            "get": {
-                "tags": [
-                    "Auth Student"
-                ],
-                "summary": "Get profile details",
-                "operationId": "a00a5f711ddefd7cc446890f37b96ff6",
-                "parameters": [
-                    {
-                        "name": "Language",
-                        "in": "header",
-                        "description": "(en or ar) If left empty it is English",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "ApiResultProfileResult response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ApiResultProfileAdminResult"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "apiAuth": []
-                    }
-                ]
-            }
-        },
-        "/student/update-profile": {
-            "post": {
-                "tags": [
-                    "Auth Student"
-                ],
-                "summary": "Edit profile content",
-                "operationId": "829e52a3a516a3f1851eb9f5183dae32",
-                "parameters": [
-                    {
-                        "name": "Language",
-                        "in": "header",
-                        "description": "(en or ar) If left empty it is English",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "content": {
-                        "multipart/form-data": {
-                            "schema": {
-                                "$ref": "#components/schemas/EditProfileAdminRequest"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "ApiResultProfileResult response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ApiResult"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "apiAuth": []
-                    }
-                ]
-            }
-        },
-        "/student/logout": {
-            "post": {
-                "tags": [
-                    "Auth Student"
-                ],
-                "summary": "Log out from system",
-                "operationId": "4ba284ddc3094e8b1d11eaf3690528e5",
-                "parameters": [
-                    {
-                        "name": "Language",
-                        "in": "header",
-                        "description": "(en or ar) If left empty it is English",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ApiResult"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "apiAuth": []
-                    }
-                ]
-            }
-        },
-        "/teacher/register": {
-            "post": {
-                "tags": [
-                    "Auth Teacher"
-                ],
-                "summary": "Register as a new Teacher",
-                "operationId": "authRegister",
-                "parameters": [
-                    {
-                        "name": "Language",
-                        "in": "header",
-                        "description": "(en or ar) If left empty it is English",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "description": "Registration model",
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/RegisterModel"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "RegisterResult response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ApiResultRegisterResult"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/teacher/login": {
-            "post": {
-                "tags": [
-                    "Auth Teacher"
-                ],
-                "summary": "Login as a Teacher",
+                "summary": "Login as a Agent and User",
                 "operationId": "authLogin",
                 "parameters": [
                     {
@@ -307,50 +144,13 @@
                 }
             }
         },
-        "/teacher/profile": {
-            "get": {
-                "tags": [
-                    "Auth Teacher"
-                ],
-                "summary": "Get profile details",
-                "operationId": "d7dc5a8b9aeb35aff3f8403c6beaae0f",
-                "parameters": [
-                    {
-                        "name": "Language",
-                        "in": "header",
-                        "description": "(en or ar) If left empty it is English",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "ApiResultProfileResult response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ApiResultProfileAdminResult"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "apiAuth": []
-                    }
-                ]
-            }
-        },
-        "/teacher/update-profile": {
+        "/user/verify-account": {
             "post": {
                 "tags": [
-                    "Auth Teacher"
+                    "Auth-login"
                 ],
-                "summary": "Edit profile content",
-                "operationId": "4f885d40920c7265438873617df3c36c",
+                "summary": "Verify account with changing its status to active",
+                "operationId": "4b65d04fa8c4ba8ede59f79cca859ea0",
                 "parameters": [
                     {
                         "name": "Language",
@@ -363,124 +163,23 @@
                     }
                 ],
                 "requestBody": {
+                    "description": "ConfirmAccountModel model",
+                    "required": true,
                     "content": {
-                        "multipart/form-data": {
+                        "application/json": {
                             "schema": {
-                                "$ref": "#components/schemas/EditProfileAdminRequest"
+                                "$ref": "#/components/schemas/ConfirmAccountModel"
                             }
                         }
                     }
                 },
                 "responses": {
                     "200": {
-                        "description": "ApiResultProfileResult response",
+                        "description": "User Profile response",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ApiResult"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "apiAuth": []
-                    }
-                ]
-            }
-        },
-        "/teacher/logout": {
-            "post": {
-                "tags": [
-                    "Auth Teacher"
-                ],
-                "summary": "Log out from system",
-                "operationId": "63f42e5108d3dfb28ab672da0f525fe2",
-                "parameters": [
-                    {
-                        "name": "Language",
-                        "in": "header",
-                        "description": "(en or ar) If left empty it is English",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ApiResult"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "apiAuth": []
-                    }
-                ]
-            }
-        },
-        "/lists/Courses-Type": {
-            "get": {
-                "tags": [
-                    "Lists"
-                ],
-                "summary": "Courses Type List",
-                "operationId": "49753e0550ec12d4ff7c4f11fed57cb6",
-                "parameters": [
-                    {
-                        "name": "Language",
-                        "in": "header",
-                        "description": "(en or ar) If left empty it is English",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "pagesize",
-                        "in": "query",
-                        "description": "number of retuned values",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "format": "int64"
-                        }
-                    },
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "description": "page number",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "format": "int64"
-                        }
-                    },
-                    {
-                        "name": "search",
-                        "in": "query",
-                        "description": "search by type",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/CourseTypeResult"
+                                    "$ref": "#/components/schemas/LoginResultApi"
                                 }
                             }
                         }
@@ -488,13 +187,267 @@
                 }
             }
         },
-        "/lists/Teachers": {
+        "/user/change-password": {
+            "post": {
+                "tags": [
+                    "Auth-login"
+                ],
+                "summary": "Change Password For Agent And User",
+                "operationId": "authChangePhone",
+                "parameters": [
+                    {
+                        "name": "Language",
+                        "in": "header",
+                        "description": "(en or ar) If left empty it is English",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "ChangePhoneNumberKernelModel model",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ChangePasswordAgentPayload"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiResult"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/user/forget-password": {
+            "post": {
+                "tags": [
+                    "Auth-login"
+                ],
+                "summary": "Resend the code if not received",
+                "operationId": "524f542eb7d698bf7911f3a990e67711",
+                "parameters": [
+                    {
+                        "name": "Language",
+                        "in": "header",
+                        "description": "(en or ar) If left empty it is English",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "phone",
+                        "in": "query",
+                        "description": "phone of admin",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiResult"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/reset-password": {
+            "post": {
+                "tags": [
+                    "Auth-login"
+                ],
+                "summary": "Verify account with changing its status to active",
+                "operationId": "f4b93abe70b831f891336181f58e2457",
+                "parameters": [
+                    {
+                        "name": "Language",
+                        "in": "header",
+                        "description": "(en or ar) If left empty it is English",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "ConfirmAccountModel model",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ForgetPasswordConfirm"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User Profile response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LoginResultApi"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/logout": {
+            "post": {
+                "tags": [
+                    "Auth-login"
+                ],
+                "summary": "Logout from system",
+                "operationId": "d061a135544d44fb15e37894c26bb694",
+                "parameters": [
+                    {
+                        "name": "Language",
+                        "in": "header",
+                        "description": "(en or ar) If left empty it is English",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiResult"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/user/delete-account": {
+            "post": {
+                "tags": [
+                    "Auth-login"
+                ],
+                "summary": "Delete as a user and agent",
+                "operationId": "31e90a52efbe5814cd08c4fd60f4f6f4",
+                "parameters": [
+                    {
+                        "name": "Language",
+                        "in": "header",
+                        "description": "(en or ar) If left empty it is English",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "LoginPayload model",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LoginPayload"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiResult"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/user/check-token": {
+            "get": {
+                "tags": [
+                    "Auth-login"
+                ],
+                "summary": "Test a token for expiration",
+                "operationId": "8a991b2d8863c5aa81b26ae303737e96",
+                "parameters": [
+                    {
+                        "name": "Language",
+                        "in": "header",
+                        "description": "(en or ar) If left empty it is English",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiResult"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/lists/type-jobs": {
             "get": {
                 "tags": [
                     "Lists"
                 ],
-                "summary": "Teachers List",
-                "operationId": "5ed748e65e71a37574eff82d15e383aa",
+                "summary": "type jobs List",
+                "operationId": "32a851f6d043abfe81b95c3df9705d36",
                 "parameters": [
                     {
                         "name": "Language",
@@ -541,7 +494,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/TeachersResult"
+                                    "$ref": "#/components/schemas/JobTypeResult"
                                 }
                             }
                         }
@@ -549,45 +502,13 @@
                 }
             }
         },
-        "/services/course-details": {
+        "/lists/sections": {
             "get": {
                 "tags": [
-                    "services teachers"
+                    "Lists"
                 ],
-                "summary": "course details",
-                "operationId": "b309842ffab553dfc11c5853320f01c9",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "query",
-                        "description": "ID of course",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "CourseResult response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/CourseResult"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/services/all-courses": {
-            "get": {
-                "tags": [
-                    "services teachers"
-                ],
-                "summary": "all courses",
-                "operationId": "0e36c43cbee7898650761b9737bffb0e",
+                "summary": "sections List",
+                "operationId": "cda15649e60c64cb4c1706b9b175ef5e",
                 "parameters": [
                     {
                         "name": "Language",
@@ -617,140 +538,24 @@
                             "type": "integer",
                             "format": "int64"
                         }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "RequestResult response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/CourseResult"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/services/create-course": {
-            "post": {
-                "tags": [
-                    "services teachers"
-                ],
-                "summary": "Create New course",
-                "operationId": "8ca345675d08adb28ac698725c6e7a43",
-                "parameters": [
+                    },
                     {
-                        "name": "Language",
-                        "in": "header",
-                        "description": "(en or ar) If left empty it is English",
+                        "name": "search",
+                        "in": "query",
+                        "description": "search by name",
                         "required": false,
                         "schema": {
                             "type": "string"
                         }
                     }
                 ],
-                "requestBody": {
-                    "content": {
-                        "multipart/form-data": {
-                            "schema": {
-                                "$ref": "#components/schemas/CreateCousePayLoad"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "RequestResult response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/CourseResult"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/services/update-course": {
-            "post": {
-                "tags": [
-                    "services teachers"
-                ],
-                "summary": "Create New course",
-                "operationId": "a0d7a771959cb6f6005fda467d1f1154",
-                "parameters": [
-                    {
-                        "name": "Language",
-                        "in": "header",
-                        "description": "(en or ar) If left empty it is English",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "content": {
-                        "multipart/form-data": {
-                            "schema": {
-                                "$ref": "#components/schemas/UpdateCoursePayLoad"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "RequestResult response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/CourseResult"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/services/delete-course": {
-            "post": {
-                "tags": [
-                    "services teachers"
-                ],
-                "summary": "delete course",
-                "operationId": "fd9174011da6f3b534f86b3f8e882976",
-                "parameters": [
-                    {
-                        "name": "Language",
-                        "in": "header",
-                        "description": "(en or ar) If left empty it is English",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "description": "LoginPayload model",
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/DeleteCoursePayload"
-                            }
-                        }
-                    }
-                },
                 "responses": {
                     "200": {
                         "description": "Success response",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ApiResult"
+                                    "$ref": "#/components/schemas/SectionResult"
                                 }
                             }
                         }
@@ -758,13 +563,13 @@
                 }
             }
         },
-        "/services/courses-student": {
+        "/lists/contact-medias": {
             "get": {
                 "tags": [
-                    "services Student"
+                    "Lists"
                 ],
-                "summary": "student courses",
-                "operationId": "fa567c340839014e09c46de18585dad9",
+                "summary": "Contact Media List",
+                "operationId": "7fbb296f4d1d09d7e63597df7edf650f",
                 "parameters": [
                     {
                         "name": "Language",
@@ -794,30 +599,52 @@
                             "type": "integer",
                             "format": "int64"
                         }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "search by name",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "RequestResult response",
+                        "description": "Success response",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/CourseResult"
+                                    "$ref": "#/components/schemas/ContactMediaResult"
                                 }
                             }
                         }
                     }
-                },
-                "security": [
-                    {
-                        "apiAuth": []
-                    }
-                ]
+                }
             }
         }
     },
     "components": {
         "schemas": {
+            "ApiResultProfileResult": {
+                "title": "ApiResultProfileResult model",
+                "description": "ApiResultProfileResult model",
+                "properties": {
+                    "result": {
+                        "$ref": "#/components/schemas/ProfileResult"
+                    },
+                    "isOk": {
+                        "title": "isOk",
+                        "description": "Indicates if the response is ok or not",
+                        "type": "boolean"
+                    },
+                    "message": {
+                        "$ref": "#/components/schemas/ApiMessage"
+                    }
+                },
+                "type": "object"
+            },
             "ApiResultRegisterResult": {
                 "title": "ApiResultRegisterResult model",
                 "description": "ApiResultRegisterResult model",
@@ -836,18 +663,359 @@
                 },
                 "type": "object"
             },
-            "LoginPayload": {
-                "title": "LoginPayload model",
-                "description": "LoginPayload model",
+            "ApiResultsendCodeResult": {
+                "title": "ApiResultRegisterResult model",
+                "description": "ApiResultRegisterResult model",
                 "properties": {
-                    "email": {
-                        "title": "email",
-                        "description": "email",
+                    "result": {
+                        "$ref": "#/components/schemas/CodeResult"
+                    },
+                    "isOk": {
+                        "title": "isOk",
+                        "description": "Indicates if the response is ok or not",
+                        "type": "boolean"
+                    },
+                    "message": {
+                        "$ref": "#/components/schemas/ApiMessage"
+                    }
+                },
+                "type": "object"
+            },
+            "ChangeEmailKernelModel": {
+                "title": "ChangeEmailKernelModel model",
+                "description": "ChangeEmailKernelModel model",
+                "properties": {
+                    "newEmail": {
+                        "title": "newEmail",
+                        "description": "User new email",
+                        "type": "string"
+                    },
+                    "password": {
+                        "title": "password",
+                        "description": "User password",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "ChangePasswordPayload": {
+                "title": "ChangePasswordPayload model",
+                "description": "ChangePasswordPayload model",
+                "properties": {
+                    "oldPassword": {
+                        "title": "oldPassword",
+                        "description": "User old password",
+                        "type": "string"
+                    },
+                    "newPassword": {
+                        "title": "newPassword",
+                        "description": "User new password",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "ChangePasswordRequestConfirmed": {
+                "title": "ChangePasswordRequestConfirmed model",
+                "description": "ChangePasswordRequestConfirmed model",
+                "properties": {
+                    "code": {
+                        "title": "code",
+                        "description": "User old password",
+                        "type": "string"
+                    },
+                    "newPassword": {
+                        "title": "newPassword",
+                        "description": "User new password",
+                        "type": "string"
+                    },
+                    "newConfirmPassword": {
+                        "title": "new_confirm_password",
+                        "description": "User new password",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "ChangePhoneNumberKernelModel": {
+                "title": "ChangePhoneNumberKernelModel model",
+                "description": "ChangePhoneNumberKernelModel model",
+                "properties": {
+                    "newPhoneNumber": {
+                        "title": "newPhoneNumber",
+                        "description": "User new phone number",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "ChangePhoneRequest": {
+                "title": "ChangePhoneRequest model",
+                "description": "ChangePhoneRequest model",
+                "properties": {
+                    "password": {
+                        "title": "password",
+                        "description": "User password",
+                        "type": "string"
+                    },
+                    "new_phone": {
+                        "title": "new_phone",
+                        "description": "User new phone",
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "ClientSubscriptionRequest": {
+                "title": "ClientSubscriptionRequest model",
+                "description": "ClientSubscriptionRequest model",
+                "properties": {
+                    "username": {
+                        "title": "username",
+                        "description": "Subscriping client name",
+                        "type": "string"
+                    },
+                    "work_name": {
+                        "title": "work_name",
+                        "description": "Work/job name",
+                        "type": "string"
+                    },
+                    "phone": {
+                        "title": "phone",
+                        "description": "Phone number",
+                        "type": "string"
+                    },
+                    "mobile": {
+                        "title": "mobile",
+                        "description": "Mobile number",
+                        "type": "string"
+                    },
+                    "city": {
+                        "title": "city",
+                        "description": "City name",
+                        "type": "string"
+                    },
+                    "area": {
+                        "title": "area",
+                        "description": "Area name",
+                        "type": "string"
+                    },
+                    "address": {
+                        "title": "address",
+                        "description": "Address",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "CodeResult": {
+                "title": "CodeResult model",
+                "description": "CodeResult model",
+                "properties": {
+                    "code": {
+                        "title": "code",
+                        "description": "code",
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "ConfirmAccountModel": {
+                "title": "ConfirmAccountModel model",
+                "description": "ConfirmAccountModel model",
+                "properties": {
+                    "phone": {
+                        "title": "phone",
+                        "description": "The phone of user to verify",
+                        "type": "string"
+                    },
+                    "code": {
+                        "title": "code",
+                        "description": "Verification Code",
                         "type": "string"
                     },
                     "password": {
                         "title": "password",
                         "description": "password",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "ConfirmationCodeModel": {
+                "title": "ConfirmationCodeModel model",
+                "description": "ConfirmationCodeModel model",
+                "properties": {
+                    "username": {
+                        "title": "username",
+                        "description": "The username or phone of user to verify",
+                        "type": "string"
+                    },
+                    "code": {
+                        "title": "code",
+                        "description": "Confirmation Code",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "EditProfileRequest": {
+                "title": "EditProfileRequest model",
+                "description": "EditProfileRequest model",
+                "properties": {
+                    "first_name": {
+                        "title": "first_name",
+                        "description": "First Name",
+                        "type": "string"
+                    },
+                    "last_name": {
+                        "title": "last_name",
+                        "description": "Last Name",
+                        "type": "string"
+                    },
+                    "email": {
+                        "title": "email",
+                        "description": "email",
+                        "type": "string"
+                    },
+                    "phone": {
+                        "title": "phone",
+                        "description": "phone",
+                        "type": "string"
+                    },
+                    "birthday": {
+                        "title": "birthday",
+                        "description": "birthday",
+                        "type": "string"
+                    },
+                    "image": {
+                        "description": "User image",
+                        "type": "string",
+                        "format": "binary"
+                    }
+                },
+                "type": "object"
+            },
+            "ExternalLoginPayload": {
+                "title": "ExternalLoginPayload model",
+                "description": "ExternalLoginPayload model",
+                "properties": {
+                    "token": {
+                        "title": "token",
+                        "description": "the access token sent from login facebook",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "ForgotPasswordApiModel": {
+                "title": "ForgotPasswordApiModel model",
+                "description": "ForgotPasswordApiModel model",
+                "properties": {
+                    "phone": {
+                        "title": "phone",
+                        "description": "phone",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "GoogleRequestLogin": {
+                "title": "GoogleRequestLogin model",
+                "description": "GoogleRequestLogin model",
+                "properties": {
+                    "auth_token": {
+                        "title": "auth_token",
+                        "description": "Facebook auth token",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "LocationModel": {
+                "title": "Location model",
+                "description": "Location model",
+                "properties": {
+                    "address": {
+                        "title": "address",
+                        "description": "Address",
+                        "type": "string"
+                    },
+                    "region_id": {
+                        "title": "region",
+                        "description": "Region",
+                        "type": "integer"
+                    },
+                    "lat": {
+                        "title": "lat",
+                        "description": "Lat",
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "lng": {
+                        "title": "lng",
+                        "description": "Lng",
+                        "type": "number",
+                        "format": "double"
+                    }
+                },
+                "type": "object"
+            },
+            "LocationUpdateModel": {
+                "title": "Location Update Model",
+                "description": "Location Update Model",
+                "properties": {
+                    "location_id": {
+                        "title": "location_id",
+                        "description": "Location Id",
+                        "type": "integer"
+                    },
+                    "address": {
+                        "title": "address",
+                        "description": "Address",
+                        "type": "string"
+                    },
+                    "region_id": {
+                        "title": "region",
+                        "description": "Region",
+                        "type": "integer"
+                    },
+                    "lat": {
+                        "title": "lat",
+                        "description": "Lat",
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "lng": {
+                        "title": "lng",
+                        "description": "Lng",
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "status": {
+                        "title": "status",
+                        "description": "Status: 0 => InActive , 1 => Active",
+                        "type": "integer",
+                        "enum": [
+                            "0",
+                            "1"
+                        ]
+                    }
+                },
+                "type": "object"
+            },
+            "LoginPayload": {
+                "title": "LoginPayload model",
+                "description": "LoginPayload model",
+                "properties": {
+                    "phone": {
+                        "title": "phone",
+                        "description": "Phone number",
+                        "type": "string"
+                    },
+                    "password": {
+                        "title": "password",
+                        "description": " Password",
                         "type": "string"
                     }
                 },
@@ -859,7 +1027,7 @@
                 "properties": {
                     "resultCode": {
                         "title": "resultCode",
-                        "description": ">-\r\n    Code of resonse (response type)\r\n        1 => Login Accepted\r\n        2 => Invalid Password\r\n        3 => Account not Confirmed\r\n        4 => User is BANNED\r\n        5 => Account not Active\r\n        6 => User not found",
+                        "description": ">-\n    Code of resonse (response type)\n        1 => Login Accepted\n        2 => Invalid Password\n        3 => Account not Confirmed\n        4 => User is BANNED\n        5 => Account not Active\n        6 => User not found",
                         "type": "integer"
                     },
                     "resultText": {
@@ -896,6 +1064,95 @@
                 },
                 "type": "object"
             },
+            "MediaResult": {
+                "title": "MediaModel model",
+                "description": "MediaModel model",
+                "properties": {
+                    "result": {
+                        "title": "result",
+                        "description": "MediaModel Result Model",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/MediaModel"
+                        }
+                    },
+                    "isOk": {
+                        "title": "isOk",
+                        "description": "Indicates if the response is ok or not",
+                        "type": "boolean"
+                    },
+                    "message": {
+                        "$ref": "#/components/schemas/ApiMessage"
+                    }
+                },
+                "type": "object"
+            },
+            "NotificationSetting": {
+                "title": "NotificationSetting model",
+                "description": "NotificationSetting model",
+                "properties": {
+                    "allowMessagesNotifications": {
+                        "title": "allowMessagesNotifications",
+                        "type": "boolean"
+                    },
+                    "ticketAnsweredNotification": {
+                        "title": "ticketAnsweredNotification",
+                        "type": "boolean"
+                    },
+                    "newReviewOnMyProduct": {
+                        "title": "newReviewOnMyProduct",
+                        "type": "boolean"
+                    },
+                    "newViewToMyProduct": {
+                        "title": "newViewToMyProduct",
+                        "type": "boolean"
+                    },
+                    "yourProductSavedBySomeone": {
+                        "title": "yourProductSavedBySomeone",
+                        "type": "boolean"
+                    }
+                },
+                "type": "object"
+            },
+            "PasswordPayload": {
+                "title": "PasswordPayload model",
+                "description": "PasswordPayload model",
+                "properties": {
+                    "password": {
+                        "title": "password",
+                        "description": "Account Password",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "PhoneModel": {
+                "title": "PhoneModel model",
+                "description": "PhoneModel model",
+                "properties": {
+                    "countryCode": {
+                        "title": "countryCode",
+                        "description": "countryCode",
+                        "type": "string"
+                    },
+                    "countryCodeSource": {
+                        "title": "countryCodeSource",
+                        "description": "countryCodeSource",
+                        "type": "string"
+                    },
+                    "nationalNumber": {
+                        "title": "nationalNumber",
+                        "description": "nationalNumber",
+                        "type": "string"
+                    },
+                    "formatedValue": {
+                        "title": "formatedValue",
+                        "description": "formatedValue",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
             "ProfileResult": {
                 "title": "ProfileResult model",
                 "description": "ProfileResult model",
@@ -905,7 +1162,22 @@
                         "description": "ID",
                         "type": "integer"
                     },
-                    "name": {
+                    "first_name": {
+                        "title": "first_name",
+                        "description": "First Name",
+                        "type": "string"
+                    },
+                    "birthday": {
+                        "title": "birthday",
+                        "description": " birthday",
+                        "type": "string"
+                    },
+                    "email": {
+                        "title": "email",
+                        "description": " email",
+                        "type": "string"
+                    },
+                    "last_name": {
                         "title": "last_name",
                         "description": "Last Name",
                         "type": "string"
@@ -915,30 +1187,99 @@
                         "description": "Phone",
                         "type": "string"
                     },
-                    "email": {
-                        "title": "email",
-                        "description": "email",
-                        "type": "string"
-                    },
                     "region": {
                         "title": "region",
                         "description": "region",
                         "type": "string"
                     },
-                    "city": {
-                        "title": "city",
-                        "description": "city",
-                        "type": "string"
-                    },
-                    "password": {
-                        "title": "password",
-                        "description": "password",
+                    "location": {
+                        "title": "location",
+                        "description": "location",
                         "type": "string"
                     },
                     "image": {
                         "title": "image",
                         "description": "Image Url",
                         "type": "string"
+                    },
+                    "preferred_media_contact": {
+                        "$ref": "#/components/schemas/MediaModel"
+                    }
+                },
+                "type": "object"
+            },
+            "ProfileSummaryApiModel": {
+                "title": "ProfileSummaryApiModel model",
+                "description": "ProfileSummaryApiModel model",
+                "properties": {
+                    "subscribedSubjectsCount": {
+                        "title": "subscribedSubjectsCount",
+                        "description": "Subscribed Subjects count",
+                        "type": "integer"
+                    },
+                    "subscribedPathsCount": {
+                        "title": "subscribedPathsCount",
+                        "description": "Subscribed Paths count",
+                        "type": "integer"
+                    },
+                    "doneSubjectsCount": {
+                        "title": "doneSubjectsCount",
+                        "description": "Done Subjects count",
+                        "type": "integer"
+                    },
+                    "donePathsCount": {
+                        "title": "donePathsCount",
+                        "description": "Done Paths count",
+                        "type": "integer"
+                    },
+                    "doneSubjectsPrecentageToFav": {
+                        "title": "doneSubjectsPrecentageToFav",
+                        "description": "Done Subjects precentage to the ones in favorit",
+                        "type": "number",
+                        "format": "float"
+                    },
+                    "donePathsPrecentageToFav": {
+                        "title": "donePathsPrecentageToFav",
+                        "description": "Done Paths precentage to the ones in favorit",
+                        "type": "number",
+                        "format": "float"
+                    },
+                    "doneSubjectsSubscribed": {
+                        "title": "doneSubjectsSubscribed",
+                        "description": "Done subjects to subscribed ones precentage",
+                        "type": "number",
+                        "format": "float"
+                    },
+                    "doneSubjectsPrecentageToSubscribed": {
+                        "title": "doneSubjectsPrecentageToSubscribed",
+                        "description": "Done subjects to subscribed ones precentage",
+                        "type": "number",
+                        "format": "float"
+                    },
+                    "donePathsPrecentageToSubscribed": {
+                        "title": "donePathsPrecentageToSubscribed",
+                        "description": "Done paths to subscribed ones precentage",
+                        "type": "number",
+                        "format": "float"
+                    }
+                },
+                "type": "object"
+            },
+            "ProfileSummeryResult": {
+                "title": "ProfileSummeryResult model",
+                "description": "ProfileSummeryResult model",
+                "properties": {
+                    "result": {
+                        "$ref": "#/components/schemas/ProfileSummaryApiModel"
+                    },
+                    "isOk": {
+                        "title": "isOk",
+                        "description": "Indicates if the response is ok or not",
+                        "type": "boolean"
+                    },
+                    "message": {
+                        "title": "message",
+                        "description": "Api message"
                     }
                 },
                 "type": "object"
@@ -947,19 +1288,24 @@
                 "title": "RegisterModel model",
                 "description": "RegisterModel model",
                 "properties": {
-                    "email": {
-                        "title": "email",
-                        "description": "email",
+                    "fullname": {
+                        "title": "fullname",
+                        "description": "fullname",
                         "type": "string"
                     },
-                    "name": {
-                        "title": "name",
-                        "description": "name",
+                    "phone": {
+                        "title": "phone",
+                        "description": "Phone",
                         "type": "string"
                     },
                     "password": {
                         "title": "password",
-                        "description": "password",
+                        "description": "User  password",
+                        "type": "string"
+                    },
+                    "ConfirmPassword": {
+                        "title": "confirm_password",
+                        "description": "User  password",
                         "type": "string"
                     }
                 },
@@ -969,19 +1315,162 @@
                 "title": "RegisterResult model",
                 "description": "RegisterResult model",
                 "properties": {
-                    "email": {
-                        "title": "email",
-                        "description": "email",
+                    "message": {
+                        "title": "message",
+                        "description": "Message",
                         "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "ResetPasswordApiModel": {
+                "title": "ResetPasswordApiModel model",
+                "description": "ResetPasswordApiModel model",
+                "properties": {
+                    "code": {
+                        "title": "code",
+                        "description": "Confirmation Code",
+                        "type": "string"
+                    },
+                    "phone": {
+                        "title": "phone",
+                        "description": "Phone",
+                        "type": "string"
+                    },
+                    "password": {
+                        "title": "password",
+                        "description": "New Password",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "SetProfileDataRequest": {
+                "title": "SetProfileDataRequest model",
+                "description": "SetProfileDataRequest model",
+                "properties": {
+                    "phone": {
+                        "title": "phone",
+                        "description": "User phone",
+                        "type": "string"
+                    },
+                    "new_password": {
+                        "title": "new_password",
+                        "description": "User new password",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "SummeryApiModel": {
+                "title": "SummeryApiModel model",
+                "description": "SummeryApiModel model",
+                "properties": {
+                    "products_count": {
+                        "title": "products_count",
+                        "description": "products_count",
+                        "type": "integer"
+                    },
+                    "businesses_count": {
+                        "title": "businesses_count",
+                        "description": "businesses_count",
+                        "type": "integer"
+                    },
+                    "categories_count": {
+                        "title": "categories_count",
+                        "description": "categories_count",
+                        "type": "integer"
+                    },
+                    "business_to_products": {
+                        "title": "business_to_products",
+                        "description": "SummeryBusinessProductsCountApiModel Result Model",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/SummeryBusinessProductsCountApiModel"
+                        }
+                    },
+                    "other_products_count": {
+                        "title": "other_products_count",
+                        "description": "other_products_count",
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "SummeryBusinessProductsCountApiModel": {
+                "title": "SummeryBusinessProductsCountApiModel model",
+                "description": "SummeryBusinessProductsCountApiModel model",
+                "properties": {
+                    "id": {
+                        "title": "id",
+                        "description": "id",
+                        "type": "integer"
                     },
                     "name": {
                         "title": "name",
                         "description": "name",
-                        "type": "string"
+                        "type": "integer"
+                    },
+                    "products_count": {
+                        "title": "products_count",
+                        "description": "products_count",
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "SummeryResult": {
+                "title": "SummeryResult model",
+                "description": "SummeryResult model",
+                "properties": {
+                    "result": {
+                        "$ref": "#/components/schemas/SummeryApiModel"
+                    },
+                    "isOk": {
+                        "title": "isOk",
+                        "description": "Indicates if the response is ok or not",
+                        "type": "boolean"
                     },
                     "message": {
                         "title": "message",
-                        "description": "Message",
+                        "description": "Api message"
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateContactAdminMedia": {
+                "title": "PhoneModel model",
+                "description": "PhoneModel model",
+                "properties": {
+                    "contact_media_ids": {
+                        "title": "countryCode",
+                        "description": "countryCode"
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateContactMedia": {
+                "title": "PhoneModel model",
+                "description": "PhoneModel model",
+                "properties": {
+                    "contact_media_ids": {
+                        "title": "countryCode",
+                        "description": "countryCode",
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateFirebaseApiRequest": {
+                "title": "UpdateFirebaseApiRequest model",
+                "description": "UpdateFirebaseApiRequest model",
+                "properties": {
+                    "newToken": {
+                        "title": "newToken",
+                        "description": "New Token",
                         "type": "string"
                     }
                 },
@@ -1005,18 +1494,80 @@
                 },
                 "type": "object"
             },
+            "CarDetails": {
+                "title": "CarDetails model",
+                "description": "CarDetails model",
+                "properties": {
+                    "carImages": {
+                        "title": "car_images",
+                        "description": "Car Images",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/CarImage"
+                        }
+                    },
+                    "carType": {
+                        "$ref": "#/components/schemas/IdValueApiModel"
+                    }
+                },
+                "type": "object"
+            },
+            "CarImage": {
+                "title": "CarImage model",
+                "description": "CarImage model",
+                "properties": {
+                    "id": {
+                        "title": "id",
+                        "description": "ID",
+                        "type": "integer"
+                    },
+                    "image": {
+                        "title": "type",
+                        "description": "Message type",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "ChangePasswordAgentPayload": {
+                "title": "ChangePasswordPayload model",
+                "description": "ChangePasswordPayload model",
+                "properties": {
+                    "oldPassword": {
+                        "title": "oldPassword",
+                        "description": "User old password",
+                        "type": "string"
+                    },
+                    "newPassword": {
+                        "title": "newPassword",
+                        "description": "User new password",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
             "EditProfileAdminRequest": {
                 "title": "EditProfileAdminRequest model",
                 "description": "EditProfileAdminRequest model",
                 "properties": {
-                    "name": {
+                    "first_name": {
+                        "title": "first_name",
+                        "description": "First Name",
+                        "type": "string"
+                    },
+                    "last_name": {
                         "title": "last_name",
                         "description": "Last Name",
                         "type": "string"
                     },
                     "phone": {
                         "title": "phone",
-                        "description": "Phone",
+                        "description": "phone",
+                        "type": "string"
+                    },
+                    "birthday": {
+                        "title": "birthday",
+                        "description": "birthday",
                         "type": "string"
                     },
                     "email": {
@@ -1024,23 +1575,23 @@
                         "description": "email",
                         "type": "string"
                     },
-                    "password": {
-                        "title": "password",
-                        "description": "password",
-                        "type": "string"
+                    "lat": {
+                        "title": "lat",
+                        "description": "lat",
+                        "type": "integer"
                     },
-                    "region": {
-                        "title": "region",
-                        "description": "region",
-                        "type": "string"
+                    "lng": {
+                        "title": "lng",
+                        "description": "lng",
+                        "type": "integer"
                     },
-                    "city": {
-                        "title": "city",
-                        "description": "city",
-                        "type": "string"
+                    "region_id": {
+                        "title": "region_id",
+                        "description": "region id",
+                        "type": "integer"
                     },
                     "image": {
-                        "description": "User image",
+                        "description": "Agent image",
                         "type": "string",
                         "format": "binary"
                     }
@@ -1058,12 +1609,12 @@
                     },
                     "code": {
                         "title": "code",
-                        "description": "Verification Code",
+                        "description": "The code of agent to verify",
                         "type": "string"
                     },
                     "newPassword": {
-                        "title": "code",
-                        "description": "Verification Code",
+                        "title": "newPassword",
+                        "description": "newPassword",
                         "type": "string"
                     }
                 },
@@ -1073,9 +1624,9 @@
                 "title": "LoginAdminPayload model",
                 "description": "LoginAdminPayload model",
                 "properties": {
-                    "email": {
-                        "title": "email",
-                        "description": "email",
+                    "phone": {
+                        "title": "phone",
+                        "description": "Phone number",
                         "type": "string"
                     },
                     "password": {
@@ -1092,7 +1643,7 @@
                 "properties": {
                     "resultCode": {
                         "title": "resultCode",
-                        "description": ">-\r\n    Code of resonse (response type)\r\n        1 => Login Accepted\r\n        2 => Invalid Password\r\n        3 => Account not Confirmed\r\n        4 => User is BANNED\r\n        5 => Account not Active\r\n        6 => User not found",
+                        "description": ">-\n    Code of resonse (response type)\n        1 => Login Accepted\n        2 => Invalid Password\n        3 => Account not Confirmed\n        4 => User is BANNED\n        5 => Account not Active\n        6 => User not found",
                         "type": "integer"
                     },
                     "resultText": {
@@ -1138,9 +1689,24 @@
                         "description": "ID",
                         "type": "integer"
                     },
-                    "name": {
+                    "first_name": {
+                        "title": "first_name",
+                        "description": "First Name",
+                        "type": "string"
+                    },
+                    "last_name": {
                         "title": "last_name",
                         "description": "Last Name",
+                        "type": "string"
+                    },
+                    "birthday": {
+                        "title": "birthday",
+                        "description": "birthday ",
+                        "type": "string"
+                    },
+                    "email": {
+                        "title": "email",
+                        "description": " email",
                         "type": "string"
                     },
                     "phone": {
@@ -1148,30 +1714,28 @@
                         "description": "Phone",
                         "type": "string"
                     },
-                    "email": {
-                        "title": "email",
-                        "description": "email",
-                        "type": "string"
-                    },
-                    "region": {
-                        "title": "region",
-                        "description": "region",
-                        "type": "string"
-                    },
-                    "city": {
-                        "title": "city",
-                        "description": "city",
-                        "type": "string"
-                    },
-                    "password": {
-                        "title": "password",
-                        "description": "password",
-                        "type": "string"
-                    },
                     "image": {
                         "title": "image",
                         "description": "Image Url",
                         "type": "string"
+                    },
+                    "city": {
+                        "title": "city",
+                        "description": "city"
+                    },
+                    "region": {
+                        "title": "region",
+                        "description": " region"
+                    },
+                    "location": {
+                        "title": "location",
+                        "description": "location",
+                        "type": "string"
+                    },
+                    "isOnline": {
+                        "title": "is_online",
+                        "description": "Is Online",
+                        "type": "integer"
                     }
                 },
                 "type": "object"
@@ -1180,6 +1744,16 @@
                 "title": "RegisterAdminModel model",
                 "description": "RegisterAdminModel model",
                 "properties": {
+                    "name": {
+                        "title": "name",
+                        "description": "name",
+                        "type": "string"
+                    },
+                    "job_type_id": {
+                        "title": "job_type_id",
+                        "description": "job_type_id",
+                        "type": "integer"
+                    },
                     "phone": {
                         "title": "phone",
                         "description": "Phone",
@@ -1189,13 +1763,70 @@
                         "title": "password",
                         "description": "Account Password",
                         "type": "string"
+                    },
+                    "country_id": {
+                        "title": "country_id",
+                        "description": "country_id",
+                        "type": "integer"
+                    },
+                    "city_id": {
+                        "title": "city_id",
+                        "description": "city_id",
+                        "type": "integer"
+                    },
+                    "address": {
+                        "title": "address",
+                        "description": "address",
+                        "type": "string"
+                    },
+                    "linephone": {
+                        "title": "linephone",
+                        "description": "linephone",
+                        "type": "string"
+                    },
+                    "description": {
+                        "title": "description",
+                        "description": "description",
+                        "type": "string"
+                    },
+                    "contact_media_ids": {
+                        "title": "contact_media_ids",
+                        "description": "contact_media_ids",
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        }
+                    },
+                    "sections_ids": {
+                        "title": "sections_ids",
+                        "description": "sections_ids",
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        }
+                    },
+                    "image_license[]": {
+                        "description": "Item image_license",
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "format": "binary"
+                        }
+                    },
+                    "image_commercial[]": {
+                        "description": "Item image_commercial",
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "format": "binary"
+                        }
                     }
                 },
                 "type": "object"
             },
-            "CategoryApiModel": {
-                "title": "CategoryApiModel model",
-                "description": "CategoryApiModel model",
+            "ContactMediaApiModel": {
+                "title": "ContactMediaApiModel model",
+                "description": "ContactMediaApiModel model",
                 "properties": {
                     "id": {
                         "title": "id",
@@ -1207,53 +1838,54 @@
                         "description": "Name",
                         "type": "string"
                     },
-                    "icon": {
-                        "title": "icon",
-                        "description": "Icon",
-                        "type": "string"
-                    },
-                    "property_details": {
-                        "title": "property_details",
-                        "description": "Property Details"
-                    },
-                    "preferences": {
-                        "title": "preferences",
-                        "description": "Preferences"
-                    },
-                    "range_prices": {
-                        "$ref": "#/components/schemas/CategoryApiModel"
+                    "status": {
+                        "title": "status",
+                        "description": "status",
+                        "type": "integer"
                     }
                 },
                 "type": "object"
             },
-            "CityApiModel": {
-                "title": "CityApiModel model",
-                "description": "CityApiModel model",
+            "ContactMediaResult": {
+                "title": "ContactMediaResult model",
+                "description": "ContactMediaResult model",
                 "properties": {
-                    "regions": {
-                        "title": "regions",
-                        "description": "Regions"
-                    },
-                    "id": {
-                        "title": "id",
-                        "description": "ID",
+                    "items_count": {
+                        "title": "items_count",
+                        "description": "items_count",
                         "type": "integer"
                     },
-                    "name": {
-                        "title": "name",
-                        "description": "Name",
-                        "type": "string"
+                    "result": {
+                        "title": "result",
+                        "description": "ContactMediaApiModel Result Model",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ContactMediaApiModel"
+                        }
+                    },
+                    "isOk": {
+                        "title": "isOk",
+                        "description": "Indicates if the response is ok or not",
+                        "type": "boolean"
+                    },
+                    "message": {
+                        "$ref": "#/components/schemas/ApiMessage"
+                    },
+                    "pagesCount": {
+                        "title": "pagesCount",
+                        "description": "Pages count of list (by page size)",
+                        "type": "integer"
                     }
                 },
                 "type": "object"
             },
-            "CourseTypeModel": {
-                "title": "PreferenceApiModel model",
-                "description": "PreferenceApiModel model",
+            "JobTypeModel": {
+                "title": "CategoryModel model",
+                "description": "CategoryModel model",
                 "properties": {
                     "id": {
                         "title": "id",
-                        "description": "ID",
+                        "description": "id",
                         "type": "integer"
                     },
                     "type": {
@@ -1265,16 +1897,13 @@
                         "title": "status",
                         "description": "status",
                         "type": "integer"
-                    },
-                    "courses": {
-                        "$ref": "#/components/schemas/CourseApiModel"
                     }
                 },
                 "type": "object"
             },
-            "CourseTypeResult": {
-                "title": "CourseTypeResult model",
-                "description": "CourseTypeResult model",
+            "JobTypeResult": {
+                "title": "JobTypeResult model",
+                "description": "JobTypeResult model",
                 "properties": {
                     "items_count": {
                         "title": "items_count",
@@ -1283,10 +1912,10 @@
                     },
                     "result": {
                         "title": "result",
-                        "description": "CourseTypeModel Result Model",
+                        "description": "RangesPriceModel Result Model",
                         "type": "array",
                         "items": {
-                            "$ref": "#/components/schemas/CourseTypeModel"
+                            "$ref": "#/components/schemas/JobTypeModel"
                         }
                     },
                     "isOk": {
@@ -1296,22 +1925,79 @@
                     },
                     "message": {
                         "$ref": "#/components/schemas/ApiMessage"
-                    },
-                    "pagesCount": {
-                        "title": "pagesCount",
-                        "description": "Pages count of list (by page size)",
-                        "type": "integer"
                     }
                 },
                 "type": "object"
             },
-            "TeacherModel": {
-                "title": "PreferenceApiModel model",
-                "description": "PreferenceApiModel model",
+            "MediaAdminModel": {
+                "title": "MediaAdminModel model",
+                "description": "MediaAdminModel model",
+                "properties": {
+                    "name": {
+                        "title": "name",
+                        "description": "preferred_contact_media name",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "MediaAdminResult": {
+                "title": "MediaAdminResult model",
+                "description": "MediaAdminResult model",
+                "properties": {
+                    "result": {
+                        "title": "result",
+                        "description": "MediaModel Result Model",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/MediaAdminModel"
+                        }
+                    },
+                    "isOk": {
+                        "title": "isOk",
+                        "description": "Indicates if the response is ok or not",
+                        "type": "boolean"
+                    },
+                    "message": {
+                        "$ref": "#/components/schemas/ApiMessage"
+                    }
+                },
+                "type": "object"
+            },
+            "MediaListResult": {
+                "title": "MediaListResult model",
+                "description": "MediaListResult model",
+                "properties": {
+                    "media_contact": {
+                        "title": "result",
+                        "description": "OrderStatusListModel Result Model",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/MediaModel"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "MediaModel": {
+                "title": "MediaModel model",
+                "description": "MediaModel model",
+                "properties": {
+                    "name": {
+                        "title": "name",
+                        "description": "preferred_contact_media name",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "SectionModel": {
+                "title": "SectionModel model",
+                "description": "SectionModel model",
                 "properties": {
                     "id": {
                         "title": "id",
-                        "description": "ID",
+                        "description": "id",
                         "type": "integer"
                     },
                     "name": {
@@ -1319,15 +2005,17 @@
                         "description": "name",
                         "type": "string"
                     },
-                    "courses": {
-                        "$ref": "#/components/schemas/CourseApiModel"
+                    "status": {
+                        "title": "status",
+                        "description": "status",
+                        "type": "integer"
                     }
                 },
                 "type": "object"
             },
-            "TeachersResult": {
-                "title": "CourseTypeResult model",
-                "description": "CourseTypeResult model",
+            "SectionResult": {
+                "title": "SectionResult model",
+                "description": "SectionResult model",
                 "properties": {
                     "items_count": {
                         "title": "items_count",
@@ -1336,10 +2024,10 @@
                     },
                     "result": {
                         "title": "result",
-                        "description": "TeacherModel Result Model",
+                        "description": "RangesPriceModel Result Model",
                         "type": "array",
                         "items": {
-                            "$ref": "#/components/schemas/TeacherModel"
+                            "$ref": "#/components/schemas/SectionModel"
                         }
                     },
                     "isOk": {
@@ -1349,11 +2037,179 @@
                     },
                     "message": {
                         "$ref": "#/components/schemas/ApiMessage"
+                    }
+                },
+                "type": "object"
+            },
+            "LocationAdmin": {
+                "title": "LocationAdmin model",
+                "description": "LocationAdmin model",
+                "properties": {
+                    "region": {
+                        "title": "address",
+                        "description": "Address"
                     },
-                    "pagesCount": {
-                        "title": "pagesCount",
-                        "description": "Pages count of list (by page size)",
+                    "lat": {
+                        "title": "lat",
+                        "description": "Lat",
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "lng": {
+                        "title": "lng",
+                        "description": "Lng",
+                        "type": "number",
+                        "format": "double"
+                    }
+                },
+                "type": "object"
+            },
+            "ActivateNotificationApiRequest": {
+                "title": "ActivateNotificationApiRequest model",
+                "description": "ActivateNotificationApiRequest model",
+                "properties": {
+                    "enable_disable_notification": {
+                        "title": "enable_disable_notification",
+                        "description": "Type of activate_notification, 1 => enable, 2 => disable",
+                        "type": "string",
+                        "enum": [
+                            "1",
+                            "2"
+                        ]
+                    }
+                },
+                "type": "object"
+            },
+            "ListNotifications": {
+                "title": "ListNotifications model",
+                "description": "ListNotifications model",
+                "properties": {
+                    "id": {
+                        "title": "id",
+                        "description": "notification Id",
+                        "type": "string"
+                    },
+                    "image": {
+                        "title": "image",
+                        "description": "Notification user image",
+                        "type": "string"
+                    },
+                    "title": {
+                        "title": "title",
+                        "description": "Notification title",
+                        "type": "string"
+                    },
+                    "body": {
+                        "title": "body",
+                        "description": "Notification body",
+                        "type": "string"
+                    },
+                    "data": {
+                        "title": "data",
+                        "description": "Data depends on the notification type",
+                        "type": "object"
+                    },
+                    "is_read": {
+                        "title": "data",
+                        "description": "Data depends on the notification type",
+                        "type": "boolean"
+                    },
+                    "date": {
+                        "title": "data",
+                        "description": "Data depends on the notification type",
+                        "type": "string"
+                    },
+                    "type": {
+                        "title": "type",
+                        "description": "type of notification",
                         "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "ListNotificationsResult": {
+                "title": "ListNotificationsResult model",
+                "description": "ListNotificationsResult model",
+                "properties": {
+                    "items_count": {
+                        "title": "items_count",
+                        "description": "items_count",
+                        "type": "integer"
+                    },
+                    "result": {
+                        "title": "result",
+                        "description": "ListNotifications Result Model",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ListNotifications"
+                        }
+                    },
+                    "isOk": {
+                        "title": "isOk",
+                        "description": "Indicates if the response is ok or not",
+                        "type": "boolean"
+                    },
+                    "message": {
+                        "$ref": "#/components/schemas/ApiMessage"
+                    }
+                },
+                "type": "object"
+            },
+            "NotificationData": {
+                "title": "NotificationData model",
+                "description": "NotificationData model",
+                "properties": {
+                    "url": {
+                        "title": "URL",
+                        "description": "Notification URL",
+                        "type": "string"
+                    },
+                    "icon": {
+                        "title": "icon",
+                        "description": "Notification Icon",
+                        "type": "string"
+                    },
+                    "is_read": {
+                        "title": "state",
+                        "description": "the state of the notification read or not",
+                        "type": "boolean"
+                    },
+                    "date": {
+                        "title": "date",
+                        "description": "Date",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "NotificationSettings": {
+                "title": "NotificationSettings model",
+                "description": "NotificationSettings model",
+                "properties": {
+                    "type": {
+                        "title": "type of the notification",
+                        "description": "Type of the Notitication",
+                        "type": "integer"
+                    },
+                    "active": {
+                        "title": "active or not",
+                        "description": "the status of the notitifcation if it's active or not.",
+                        "type": "boolean"
+                    }
+                },
+                "type": "object"
+            },
+            "NotificationSettingsRequest": {
+                "title": "NotificationSettingsRequest model",
+                "description": "NotificationSettingsRequest model",
+                "properties": {
+                    "notificationTypes": {
+                        "title": "result",
+                        "description": "NotificationSettings Result Model",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/NotificationSettings"
+                        }
                     }
                 },
                 "type": "object"
@@ -1506,278 +2362,6 @@
                         "title": "id",
                         "description": "item ID",
                         "type": "string"
-                    }
-                },
-                "type": "object"
-            },
-            "ApiImages": {
-                "title": "ApiImages model",
-                "description": "ApiImages model",
-                "properties": {
-                    "id": {
-                        "title": "id",
-                        "description": "id of image",
-                        "type": "integer"
-                    },
-                    "file": {
-                        "title": "file",
-                        "description": "file",
-                        "type": "string"
-                    }
-                },
-                "type": "object"
-            },
-            "CourseApiModel": {
-                "title": "CourseApiModel model",
-                "description": "CourseApiModel model",
-                "properties": {
-                    "id": {
-                        "title": "id",
-                        "description": "ID",
-                        "type": "integer"
-                    },
-                    "pages_count": {
-                        "title": "pages_count",
-                        "description": "pages_count",
-                        "type": "integer"
-                    },
-                    "title": {
-                        "title": "title",
-                        "description": "title",
-                        "type": "string"
-                    },
-                    "content": {
-                        "title": "content",
-                        "description": "content",
-                        "type": "string"
-                    },
-                    "coures_type": {
-                        "title": "coures_type",
-                        "description": "coures_type"
-                    },
-                    "user": {
-                        "$ref": "#/components/schemas/ProfileResult"
-                    },
-                    "media": {
-                        "$ref": "#/components/schemas/ApiImages"
-                    },
-                    "view_count": {
-                        "title": "view_count",
-                        "description": "view_count",
-                        "type": "integer"
-                    }
-                },
-                "type": "object"
-            },
-            "CourseResult": {
-                "title": "CourseResult model",
-                "description": "CourseResult model",
-                "properties": {
-                    "items_count": {
-                        "title": "items_count",
-                        "description": "items_count",
-                        "type": "integer"
-                    },
-                    "result": {
-                        "title": "result",
-                        "description": "CourseApiModel Result Model",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/CourseApiModel"
-                        }
-                    },
-                    "isOk": {
-                        "title": "isOk",
-                        "description": "Indicates if the response is ok or not",
-                        "type": "boolean"
-                    },
-                    "message": {
-                        "$ref": "#/components/schemas/ApiMessage"
-                    },
-                    "pagesCount": {
-                        "title": "pagesCount",
-                        "description": "Pages count of list (by page size)",
-                        "type": "integer"
-                    }
-                },
-                "type": "object"
-            },
-            "CreateCousePayLoad": {
-                "title": "CreatePrescriptionPayLoad model",
-                "description": "CreatePrescriptionPayLoad model",
-                "properties": {
-                    "title": {
-                        "title": "title",
-                        "description": "title",
-                        "type": "string"
-                    },
-                    "content": {
-                        "title": "content",
-                        "description": "content",
-                        "type": "string"
-                    },
-                    "type_id": {
-                        "title": "type_id",
-                        "description": "type_id",
-                        "type": "integer"
-                    },
-                    "user_id": {
-                        "title": "user_id",
-                        "description": "user_id",
-                        "type": "integer"
-                    },
-                    "media[]": {
-                        "description": "Item media",
-                        "type": "array",
-                        "items": {
-                            "type": "string",
-                            "format": "binary"
-                        }
-                    }
-                },
-                "type": "object"
-            },
-            "DeleteCoursePayload": {
-                "title": "DeleteCoursePayload model",
-                "description": "DeleteCoursePayload model",
-                "properties": {
-                    "course_id": {
-                        "title": "course_id",
-                        "description": "Id of course",
-                        "type": "integer"
-                    }
-                },
-                "type": "object"
-            },
-            "PrescriptionRequestApiModel": {
-                "title": "PropertyRequestApiModel model",
-                "description": "PropertyRequestApiModel model",
-                "properties": {
-                    "id": {
-                        "title": "id",
-                        "description": "ID",
-                        "type": "integer"
-                    },
-                    "pages_count": {
-                        "title": "pages_count",
-                        "description": "pages_count",
-                        "type": "integer"
-                    },
-                    "costomer": {
-                        "title": "costomer_id",
-                        "description": "costomer_id",
-                        "type": "integer"
-                    },
-                    "doctor": {
-                        "title": "doctor_id",
-                        "description": "doctor_id",
-                        "type": "integer"
-                    },
-                    "medications_ids": {
-                        "title": "medications_ids",
-                        "description": "medications_ids",
-                        "type": "array",
-                        "items": {
-                            "type": "integer"
-                        }
-                    },
-                    "precription_quantity": {
-                        "title": "precription_quantity",
-                        "description": "precription_quantity",
-                        "type": "integer"
-                    },
-                    "instruction_to_customer": {
-                        "title": "instruction_to_customer",
-                        "description": "instruction_to_customer",
-                        "type": "string"
-                    },
-                    "date_prescription": {
-                        "title": "date_prescription",
-                        "description": "date_prescription",
-                        "type": "string",
-                        "format": "datetime"
-                    },
-                    "date_prescription_renewal": {
-                        "title": "date_prescription_renewal",
-                        "description": "date_prescription_renewal",
-                        "type": "string",
-                        "format": "datetime"
-                    },
-                    "date_prescription_send_to_doctor": {
-                        "title": "date_prescription_send_to_doctor",
-                        "description": "date_prescription_send_to_doctor",
-                        "type": "string",
-                        "format": "datetime"
-                    },
-                    "date_prescription_processed": {
-                        "title": "date_prescription_processed",
-                        "description": "date_prescription_processed",
-                        "type": "string",
-                        "format": "datetime"
-                    },
-                    "date_prescription_from_doctor": {
-                        "title": "date_prescription_processed",
-                        "description": "date_prescription_processed",
-                        "type": "string",
-                        "format": "datetime"
-                    },
-                    "date_prescription_recived_from_doctor": {
-                        "title": "date_prescription_recived_from_doctor",
-                        "description": "date_prescription_recived_from_doctor",
-                        "type": "string",
-                        "format": "datetime"
-                    },
-                    "date_prescription_sent_to_comany": {
-                        "title": "date_prescription_sent_to_comany",
-                        "description": "date_prescription_sent_to_comany",
-                        "type": "string",
-                        "format": "datetime"
-                    },
-                    "date_prescription_filled": {
-                        "title": "date_prescription_filled",
-                        "description": "date_prescription_filled",
-                        "type": "string",
-                        "format": "datetime"
-                    }
-                },
-                "type": "object"
-            },
-            "UpdateCoursePayLoad": {
-                "title": "CreatePrescriptionPayLoad model",
-                "description": "CreatePrescriptionPayLoad model",
-                "properties": {
-                    "course_id": {
-                        "title": "course_id",
-                        "description": "course_id",
-                        "type": "integer"
-                    },
-                    "title": {
-                        "title": "title",
-                        "description": "title",
-                        "type": "string"
-                    },
-                    "content": {
-                        "title": "content",
-                        "description": "content",
-                        "type": "string"
-                    },
-                    "type_id": {
-                        "title": "type_id",
-                        "description": "type_id",
-                        "type": "integer"
-                    },
-                    "user_id": {
-                        "title": "user_id",
-                        "description": "user_id",
-                        "type": "integer"
-                    },
-                    "media[]": {
-                        "description": "Item media",
-                        "type": "array",
-                        "items": {
-                            "type": "string",
-                            "format": "binary"
-                        }
                     }
                 },
                 "type": "object"

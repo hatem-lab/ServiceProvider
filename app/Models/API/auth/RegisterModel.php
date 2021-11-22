@@ -20,34 +20,48 @@ use Illuminate\Database\Eloquent\Model;
  */
 class RegisterModel extends Model
 {
+
+
     /**
      * @OA\Property(
-     *     description="email",
-     *     title="email",
+     *     description="fullname",
+     *     title="fullname",
      * )
      *
      * @var string
      */
-    public $email;
+    public $fullname;
 
     /**
      * @OA\Property(
-     *     description="name",
-     *     title="name",
+     *     description="Phone",
+     *     title="phone",
      * )
      *
      * @var string
      */
-    public $name;
+    public $phone;
 
     /**
      * @OA\Property(
-     *     description="password",
+     *     description="User  password",
      *     title="password",
      * )
      *
      * @var string
      */
     public $password;
+
+
+    /**
+     * @OA\Property(
+     *     description="User  password",
+     *     title="confirm_password",
+     * )
+     *
+     * @var string
+     */
+    public $ConfirmPassword;
+
     }
 

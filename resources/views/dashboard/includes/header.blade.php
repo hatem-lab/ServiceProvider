@@ -10,7 +10,7 @@
                     <a class="navbar-brand" href="index.html">
                         <img class="brand-logo" alt="modern admin logo"
                              src="{{asset('assets/admin/images/logo/logo.png')}}">
-                        <h3 class="brand-text">LMS</h3>
+                        <h3 class="brand-text">{{Lang::get('all.Prescription',[],getCurrentLang())}}</h3>
                     </a>
                 </li>
                 <li class="nav-item d-md-none">
@@ -32,7 +32,7 @@
                         <a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
                 <span class="mr-1">{{Lang::get('all.hello',[],getCurrentLang())}}
                   <span
-                      class="user-name text-bold-700">  {{auth('admin') -> user() -> name}}</span>
+                      class="user-name text-bold-700">  {{auth('admin') -> user() -> username}}</span>
                 </span>
                          </a>
                         <div class="dropdown-menu dropdown-menu-right"><a class="dropdown-item" href="{{route('edit.profile')}}"><i

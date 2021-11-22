@@ -9,7 +9,7 @@ use Illuminate\Routing\Controller as BaseController;
 
 /**
  * @OA\Info(
- *    title="Start Laravel",
+ *    title="Service Provider",
  *    version="1.0.0",
  * ),
  *   @OA\Server(
@@ -17,7 +17,7 @@ use Illuminate\Routing\Controller as BaseController;
  *   description="main server",
  * ),
  *   @OA\Server(
- *   url="/laravel/backend/public/api",
+ *   url="/backend/public/api",
  *   description="local server",
  * ),
  *

@@ -19,10 +19,10 @@
                                             <h1><i class="cc XRP info font-large-2" title="XRP"></i></h1>
                                         </div>
                                         <div class="col-5 pl-2">
-                                            <h4>{{Lang::get('all.all courses',[],getCurrentLang())}} </h4>
+                                            <h4>{{Lang::get('all.all categories',[],getCurrentLang())}} </h4>
                                          </div>
                                         <div class="col-5 text-right">
-                                            <h4>{{\App\Models\CourseType::count()}}</h4>
+                                            <h4></h4>
                                          </div>
                                     </div>
                                 </div>

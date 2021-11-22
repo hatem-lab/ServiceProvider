@@ -6,6 +6,7 @@
 
 namespace App\Models\API\auth_admin;
 
+use App\Models\API\location\CityApiModel;
 use App\Models\API\location\CityDetailsApiModel;
 use App\Models\API\location\CountryDetailsApiModel;
 use App\Models\API\location\Location;
@@ -28,9 +29,13 @@ use Illuminate\Database\Eloquent\Model;
  */
 class ProfileAdminResult extends Model
 {
-protected $fillable=['id','city','region','password',
-    'email','image','name','phone'];
 
+    protected $fillable = [
+        'id' , 'first_name' , 'last_name' ,
+        'phone' , 'image' ,'city','region','birthday','email',
+        'location' , 'isOnline','preferred_media_contact'
+
+    ];
 
     /**
      * @OA\Property(
@@ -43,6 +48,15 @@ protected $fillable=['id','city','region','password',
     public $id;
 
 
+    /**
+     * @OA\Property(
+     *     description="First Name",
+     *     title="first_name",
+     * )
+     *
+     * @var string
+     */
+    public $first_name;
 
     /**
      * @OA\Property(
@@ -52,7 +66,25 @@ protected $fillable=['id','city','region','password',
      *
      * @var string
      */
-    public $name;
+    public $last_name;
+    /**
+     * @OA\Property(
+     *     description="birthday ",
+     *     title="birthday",
+     * )
+     *
+     * @var string
+     */
+    public $birthday;
+    /**
+     * @OA\Property(
+     *     description=" email",
+     *     title="email",
+     * )
+     *
+     * @var string
+     */
+    public $email;
 
     /**
      * @OA\Property(
@@ -64,45 +96,6 @@ protected $fillable=['id','city','region','password',
      */
     public $phone;
 
-    /**
-     * @OA\Property(
-     *     description="email",
-     *     title="email",
-     * )
-     *
-     * @var string
-     */
-    public $email;
-
-    /**
-     * @OA\Property(
-     *     description="region",
-     *     title="region",
-     * )
-     *
-     * @var string
-     */
-    public $region;
-
-    /**
-     * @OA\Property(
-     *     description="city",
-     *     title="city",
-     * )
-     *
-     * @var string
-     */
-    public $city;
-
-    /**
-     * @OA\Property(
-     *     description="password",
-     *     title="password",
-     * )
-     *
-     * @var string
-     */
-    public $password;
 
     /**
      * @OA\Property(
@@ -114,13 +107,50 @@ protected $fillable=['id','city','region','password',
      */
     public $image;
 
+    /**
+     * @OA\Property(
+     *     description="city",
+     *     title="city",
+     * )
+     *
+     * @var CityApiModel
+     */
+    public $city;
 
 
+    /**
+     * @OA\Property(
+     *     description=" region",
+     *     title="region",
+
+     * )
+     *
+     * @var RegionApiModel
+     */
+
+    public $region;
+
+    /**
+     * @OA\Property(
+     *     description="location",
+     *     title="location",
+     * )
+     *
+     * @var string
+     */
+    public $location;
 
 
+    /**
+     * @OA\Property(
+     *     description="Is Online",
+     *     title="is_online",
+     * )
+     *
+     * @var integer
+     */
 
-
-
+    public $isOnline;
 
 
 

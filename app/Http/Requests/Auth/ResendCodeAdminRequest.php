@@ -27,7 +27,7 @@ class ResendCodeAdminRequest extends FormRequest
     public function rules()
     {
         return [
-            'phone' => 'required|exists:admins'
+            'phone' => 'required|exists:users'
         ];
     }
 
